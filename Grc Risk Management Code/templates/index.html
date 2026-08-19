@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GRC Risk Register - Academic Cybersecurity Governance, Risk, and Compliance Management System">
+  <title>GRC Risk Register | Cybersecurity Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="theme-light">
+
+  <!-- ========================================================================= -->
+  <!-- 1. UNAUTHENTICATED VIEW (TRUE UNPROTECTED LOGIN SCREEN)                   -->
+  <!-- ========================================================================= -->
+  <div id="unauthenticated-view" class="unauthenticated-view">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="brand-icon auth-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <h2 class="auth-title">GRC Risk Register</h2>
+        <p class="auth-subtitle">Cybersecurity Risk Management System</p>
+      </div>
+
+      <form id="form-login" class="auth-form">
+        <div class="form-group">
+          <label for="login-username">Username</label>
+          <input type="text" id="login-username" class="form-input" required placeholder="Enter username" autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-input" required placeholder="Enter password" autocomplete="current-password">
+        </div>
+
+        <div class="form-error" id="login-error-msg" style="display: none;"></div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="btn-submit-login">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. AUTHENTICATED APPLICATION VIEW                                         -->
+  <!-- ========================================================================= -->
+  <div id="authenticated-view" class="authenticated-view" style="display: none;">
+
+    <!-- TOP HEADER & APP NAVIGATION -->
+    <header class="app-header" id="main-header">
+      <div class="header-brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">GRC Risk Register</h1>
+          <span class="brand-subtitle">Cybersecurity Risk Management System</span>
+        </div>
+      </div>
+
+      <!-- Active Navigation Tabs (Strictly Approved Scope) -->
+      <nav class="app-nav" id="main-nav" aria-label="Main Navigation">
+        <button class="nav-btn active" id="nav-btn-dashboard" data-tab="dashboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" id="nav-btn-assets" data-tab="assets">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+          <span>Assets</span>
+        </button>
+        <button class="nav-btn" id="nav-btn-risks" data-tab="risks">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Risks</span>
+        </button>
+        <button class="nav-btn" id="nav-btn-reports" data-tab="reports">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Reports</span>
+        </button>
+        <button class="nav-btn" id="nav-btn-profile" data-tab="profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Profile & Audit</span>
+        </button>
+      </nav>
+
+      <!-- User Header Status -->
+      <div class="header-user" id="header-user-panel">
+        <div class="user-badge-container">
+          <span class="user-role-badge" id="current-user-role">Risk Analyst</span>
+          <span class="user-display-name" id="current-user-name">Loading...</span>
+        </div>
+        <button class="btn-icon" id="btn-logout" title="Sign Out" aria-label="Sign Out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="app-main" id="app-container">
+
+      <!-- Development Notice Banner -->
+      <div class="dev-notice-banner" id="dev-notice-banner" style="display: none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dev-notice-icon">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>Some features are currently under development and are temporarily unavailable.</span>
+      </div>
+
+      <!-- TAB 1: DASHBOARD VIEW -->
+      <section class="tab-pane active" id="pane-dashboard">
+        <div class="pane-header">
+          <div>
+            <h2 class="pane-title">Executive Dashboard</h2>
+            <p class="pane-description">High-level cybersecurity risk overview, critical asset count, and qualitative threat distribution.</p>
+          </div>
+          <div class="pane-actions">
+            <button class="btn btn-secondary" id="btn-refresh-dashboard">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card" id="kpi-total-assets">
+            <div class="kpi-content">
+              <span class="kpi-label">Total Assets</span>
+              <span class="kpi-value" id="kpi-val-assets">0</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-total-risks">
+            <div class="kpi-content">
+              <span class="kpi-label">Total Identified Risks</span>
+              <span class="kpi-value" id="kpi-val-risks">0</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-open-risks">
+            <div class="kpi-content">
+              <span class="kpi-label">Open / In Progress</span>
+              <span class="kpi-value" id="kpi-val-open">0</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-high-risks">
+            <div class="kpi-content">
+              <span class="kpi-label">High Severity Risks</span>
+              <span class="kpi-value" id="kpi-val-high">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Visualizations Grid -->
+        <div class="dashboard-grid">
+          <!-- 3x3 Risk Matrix Heatmap -->
+          <div class="card card-heatmap">
+            <div class="card-header">
+              <h3 class="card-title">Qualitative Risk Matrix (3 &times; 3)</h3>
+              <span class="card-tag">NIST SP 800-30 Matrix</span>
+            </div>
+            <div class="card-body">
+              <p class="matrix-instruction">Visual distribution of identified cybersecurity risks by Likelihood vs. Impact.</p>
+              
+              <div class="heatmap-wrapper">
+                <div class="heatmap-y-axis">
+                  <span class="axis-title">LIKELIHOOD &rarr;</span>
+                  <span class="axis-label">High (3)</span>
+                  <span class="axis-label">Medium (2)</span>
+                  <span class="axis-label">Low (1)</span>
+                </div>
+                <div class="heatmap-content">
+                  <div class="heatmap-grid" id="dashboard-heatmap-grid"></div>
+                  <div class="heatmap-x-axis">
+                    <span class="axis-label">Low (1)</span>
+                    <span class="axis-label">Medium (2)</span>
+                    <span class="axis-label">High (3)</span>
+                    <span class="axis-title">&larr; IMPACT &rarr;</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Heatmap Legend -->
+              <div class="matrix-legend">
+                <div class="legend-item"><span class="legend-dot dot-low"></span> Low Risk (Score 1-2)</div>
+                <div class="legend-item"><span class="legend-dot dot-medium"></span> Medium Risk (Score 3-4)</div>
+                <div class="legend-item"><span class="legend-dot dot-high"></span> High Risk (Score 6-9)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Risk Level & Status Breakdown -->
+          <div class="card card-stats">
+            <div class="card-header">
+              <h3 class="card-title">Risk Severity Breakdown</h3>
+              <span class="card-tag">Distribution</span>
+            </div>
+            <div class="card-body">
+              <div class="stat-progress-list" id="level-progress-list">
+                <div class="stat-row">
+                  <div class="stat-header">
+                    <span class="stat-title badge-high">High Risk</span>
+                    <span class="stat-count" id="stat-count-high">0</span>
+                  </div>
+                  <div class="progress-bar-bg"><div class="progress-bar-fill fill-high" id="bar-fill-high" style="width: 0%;"></div></div>
+                </div>
+
+                <div class="stat-row">
+                  <div class="stat-header">
+                    <span class="stat-title badge-medium">Medium Risk</span>
+                    <span class="stat-count" id="stat-count-medium">0</span>
+                  </div>
+                  <div class="progress-bar-bg"><div class="progress-bar-fill fill-medium" id="bar-fill-medium" style="width: 0%;"></div></div>
+                </div>
+
+                <div class="stat-row">
+                  <div class="stat-header">
+                    <span class="stat-title badge-low">Low Risk</span>
+                    <span class="stat-count" id="stat-count-low">0</span>
+                  </div>
+                  <div class="progress-bar-bg"><div class="progress-bar-fill fill-low" id="bar-fill-low" style="width: 0%;"></div></div>
+                </div>
+              </div>
+
+              <div class="status-summary-box">
+                <h4 class="box-title">Risk Treatment Status</h4>
+                <div class="status-chips" id="status-chips-container">
+                  <div class="status-chip"><span class="chip-label">Open:</span> <strong id="chip-count-open">0</strong></div>
+                  <div class="status-chip"><span class="chip-label">In Progress:</span> <strong id="chip-count-progress">0</strong></div>
+                  <div class="status-chip"><span class="chip-label">Treated:</span> <strong id="chip-count-treated">0</strong></div>
+                  <div class="status-chip"><span class="chip-label">Closed:</span> <strong id="chip-count-closed">0</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Registered Risks -->
+        <div class="card card-recent-table">
+          <div class="card-header">
+            <h3 class="card-title">Recent Cybersecurity Risks</h3>
+            <button class="btn-link" id="btn-goto-risks">View All Risks &rarr;</button>
+          </div>
+          <div class="card-body no-padding">
+            <div class="table-responsive">
+              <table class="data-table" id="table-recent-risks">
+                <thead>
+                  <tr>
+                    <th>Risk ID</th>
+                    <th>Title</th>
+                    <th>Linked Asset</th>
+                    <th>Score</th>
+                    <th>Level</th>
+                    <th>Status</th>
+                    <th>Owner</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-recent-risks">
+                  <tr><td colspan="7" class="text-center text-muted">Loading risks...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: ASSET MANAGEMENT VIEW -->
+      <section class="tab-pane" id="pane-assets">
+        <div class="pane-header">
+          <div>
+            <h2 class="pane-title">Organizational Assets</h2>
+            <p class="pane-description">Register and categorize data, systems, devices, and services subject to cybersecurity risks.</p>
+          </div>
+          <div class="pane-actions">
+            <button class="btn btn-primary" id="btn-open-add-asset-modal">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Asset
+            </button>
+          </div>
+        </div>
+
+        <!-- Asset Filters & Search Bar -->
+        <div class="filter-bar">
+          <div class="search-input-wrapper">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="asset-search-input" placeholder="Search assets by name, ID, or owner...">
+          </div>
+
+          <div class="filter-group">
+            <select id="asset-type-filter" class="form-select">
+              <option value="">All Asset Types</option>
+              <option value="Data">Data</option>
+              <option value="System">System</option>
+              <option value="Device">Device</option>
+              <option value="Service">Service</option>
+            </select>
+
+            <label class="toggle-checkbox" id="label-asset-archive-toggle">
+              <input type="checkbox" id="asset-show-archived">
+              <span class="toggle-text">Show Archived</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Assets Table -->
+        <div class="card no-padding">
+          <div class="table-responsive">
+            <table class="data-table" id="table-assets">
+              <thead>
+                <tr>
+                  <th>Asset ID</th>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Importance</th>
+                  <th>Owner</th>
+                  <th>Linked Risks</th>
+                  <th>Status</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-assets">
+                <tr><td colspan="8" class="text-center text-muted">Loading assets...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: RISK MANAGEMENT VIEW -->
+      <section class="tab-pane" id="pane-risks">
+        <div class="pane-header">
+          <div>
+            <h2 class="pane-title">Cybersecurity Risk Register</h2>
+            <p class="pane-description">Identify, evaluate, score, and track treatments for organizational cybersecurity risks.</p>
+          </div>
+          <div class="pane-actions">
+            <button class="btn btn-primary" id="btn-open-add-risk-modal">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Risk
+            </button>
+          </div>
+        </div>
+
+        <!-- Risk Filters & Search Bar -->
+        <div class="filter-bar">
+          <div class="search-input-wrapper">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="risk-search-input" placeholder="Search risks by title, ID, or owner...">
+          </div>
+
+          <div class="filter-group">
+            <select id="risk-level-filter" class="form-select">
+              <option value="">All Risk Levels</option>
+              <option value="High">High Severity</option>
+              <option value="Medium">Medium Severity</option>
+              <option value="Low">Low Severity</option>
+            </select>
+
+            <select id="risk-status-filter" class="form-select">
+              <option value="">All Statuses</option>
+              <option value="Open">Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Treated">Treated</option>
+              <option value="Closed">Closed</option>
+            </select>
+
+            <label class="toggle-checkbox" id="label-risk-archive-toggle">
+              <input type="checkbox" id="risk-show-archived">
+              <span class="toggle-text">Show Archived</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Risk Register Table -->
+        <div class="card no-padding">
+          <div class="table-responsive">
+            <table class="data-table" id="table-risks">
+              <thead>
+                <tr>
+                  <th>Risk ID</th>
+                  <th>Title</th>
+                  <th>Linked Asset</th>
+                  <th>Likelihood</th>
+                  <th>Impact</th>
+                  <th>Score</th>
+                  <th>Level</th>
+                  <th>Status</th>
+                  <th>Owner</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-risks">
+                <tr><td colspan="10" class="text-center text-muted">Loading risk register...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: REPORTS VIEW -->
+      <section class="tab-pane" id="pane-reports">
+        <div class="pane-header">
+          <div>
+            <h2 class="pane-title">Cybersecurity Risk Reports</h2>
+            <p class="pane-description">Generate printable governance summaries and export datasets for stakeholders.</p>
+          </div>
+          <div class="pane-actions">
+            <button class="btn btn-secondary" id="btn-export-csv">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export CSV
+            </button>
+            <button class="btn btn-primary" id="btn-print-report">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+              Print Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Printable Document View -->
+        <div class="report-container" id="printable-report-container">
+          <div class="report-header">
+            <div>
+              <h1 class="report-title">Cybersecurity Risk Management Report</h1>
+              <p class="report-subtitle">GRC Risk Register & Assessment Summary</p>
+            </div>
+            <div class="report-meta">
+              <div><strong>Generated Date:</strong> <span id="report-meta-date">--</span></div>
+              <div><strong>Generated By:</strong> <span id="report-meta-user">--</span></div>
+              <div><strong>Classification:</strong> Confidential / Academic GRC</div>
+            </div>
+          </div>
+
+          <div class="report-summary-boxes">
+            <div class="rep-box"><span class="rep-lbl">Total Assets</span><strong id="rep-val-assets">0</strong></div>
+            <div class="rep-box"><span class="rep-lbl">Total Risks</span><strong id="rep-val-risks">0</strong></div>
+            <div class="rep-box"><span class="rep-lbl">High Risks</span><strong id="rep-val-high">0</strong></div>
+            <div class="rep-box"><span class="rep-lbl">Open Risks</span><strong id="rep-val-open">0</strong></div>
+          </div>
+
+          <table class="data-table report-table" id="table-report-data">
+            <thead>
+              <tr>
+                <th>Risk ID</th>
+                <th>Title</th>
+                <th>Linked Asset</th>
+                <th>Score</th>
+                <th>Level</th>
+                <th>Status</th>
+                <th>Owner</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-report-data">
+              <tr><td colspan="7" class="text-center text-muted">Generating report dataset...</td></tr>
+            </tbody>
+          </table>
+
+          <div class="report-footer">
+            <p>GRC Risk Register — Cybersecurity Governance, Risk & Compliance Management System</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: PROFILE & AUDIT VIEW -->
+      <section class="tab-pane" id="pane-profile">
+        <div class="pane-header">
+          <div>
+            <h2 class="pane-title">User Profile & System Administration</h2>
+            <p class="pane-description">Account credentials, session context, demo feature controls, and system audit logs.</p>
+          </div>
+        </div>
+
+        <!-- Profile Details Grid -->
+        <div class="profile-grid">
+          <div class="card card-profile-info">
+            <div class="card-header">
+              <h3 class="card-title">Session Profile</h3>
+              <span class="card-tag" id="profile-role-tag">Analyst</span>
+            </div>
+            <div class="card-body">
+              <div class="profile-details-list">
+                <div class="profile-item">
+                  <span class="item-label">Full Name:</span>
+                  <strong id="profile-display-name">--</strong>
+                </div>
+                <div class="profile-item">
+                  <span class="item-label">Username:</span>
+                  <strong id="profile-username">--</strong>
+                </div>
+                <div class="profile-item">
+                  <span class="item-label">Assigned Role:</span>
+                  <strong id="profile-role">--</strong>
+                </div>
+                <div class="profile-item">
+                  <span class="item-label">Email Address:</span>
+                  <span id="profile-email">--</span>
+                </div>
+                <div class="profile-item">
+                  <span class="item-label">Session Status:</span>
+                  <span class="badge-status status-treated">Active</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-matrix-ref">
+            <div class="card-header">
+              <h3 class="card-title">Qualitative Risk Model Reference</h3>
+              <span class="card-tag">NIST SP 800-30</span>
+            </div>
+            <div class="card-body">
+              <p class="text-muted text-sm">Deterministic scoring standard evaluated across Likelihood (1-3) and Impact (1-3):</p>
+              <div class="formula-box">
+                <code>Score = Likelihood &times; Impact</code>
+              </div>
+              <ul class="formula-list">
+                <li><strong>Low Risk (1-2)</strong>: Minimal operational threat; periodic review.</li>
+                <li><strong>Medium Risk (3-4)</strong>: Moderate concern; scheduled remediation required.</li>
+                <li><strong>High Risk (6-9)</strong>: Critical threat; immediate treatment plan needed.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Administrator Only Demo Feature Controls Section -->
+        <div class="card card-feature-controls" id="card-feature-controls" style="display: none;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Demo Feature Controls</h3>
+              <span class="card-subtitle-sm">Configure operational availability of application actions and features.</span>
+            </div>
+            <span class="card-tag">Admin Control</span>
+          </div>
+          <div class="card-body">
+            <form id="form-feature-controls">
+              <div class="feature-controls-grid">
+                <div class="fc-category-column">
+                  <h4 class="fc-category-title">Dashboard</h4>
+                  <div class="fc-checkbox-group" id="fc-group-dashboard"></div>
+                </div>
+
+                <div class="fc-category-column">
+                  <h4 class="fc-category-title">Assets</h4>
+                  <div class="fc-checkbox-group" id="fc-group-assets"></div>
+                </div>
+
+                <div class="fc-category-column">
+                  <h4 class="fc-category-title">Risks</h4>
+                  <div class="fc-checkbox-group" id="fc-group-risks"></div>
+                </div>
+
+                <div class="fc-category-column">
+                  <h4 class="fc-category-title">Reports</h4>
+                  <div class="fc-checkbox-group" id="fc-group-reports"></div>
+                </div>
+
+                <div class="fc-category-column">
+                  <h4 class="fc-category-title">Profile / Audit</h4>
+                  <div class="fc-checkbox-group" id="fc-group-profile"></div>
+                </div>
+
+                <div class="fc-category-column">
+                  <h4 class="fc-category-title">Administration</h4>
+                  <div class="fc-checkbox-group" id="fc-group-admin"></div>
+                </div>
+              </div>
+
+              <div class="fc-footer">
+                <button type="submit" class="btn btn-primary" id="btn-save-feature-controls">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Administrator Only Audit Logs Section -->
+        <div class="card card-audit" id="audit-log-card">
+          <div class="card-header">
+            <h3 class="card-title">System Audit Log</h3>
+            <span class="card-tag">Admin Traceability</span>
+          </div>
+          <div class="card-body no-padding">
+            <div class="table-responsive">
+              <table class="data-table" id="table-audit-logs">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Entity</th>
+                    <th>Details</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-audit-logs">
+                  <tr><td colspan="5" class="text-center text-muted">Loading audit logs...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 3. MODALS (ASSET CRUD, RISK CRUD)                                          -->
+  <!-- ========================================================================= -->
+
+  <!-- Modal 1: Asset Modal (Add / Edit) -->
+  <div class="modal-overlay" id="modal-asset">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="asset-modal-title">Register New Asset</h3>
+        <button class="btn-close" id="btn-close-asset-modal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="form-asset" class="modal-form">
+        <input type="hidden" id="asset-form-id">
+
+        <div class="form-group">
+          <label for="asset-form-name">Asset Name <span class="required">*</span></label>
+          <input type="text" id="asset-form-name" class="form-input" required placeholder="e.g. Cardholder Payment Database">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="asset-form-type">Asset Type <span class="required">*</span></label>
+            <select id="asset-form-type" class="form-select" required>
+              <option value="Data">Data (Databases, Customer PII, Financials)</option>
+              <option value="System">System (Servers, Active Directory, Clusters)</option>
+              <option value="Device">Device (Laptops, Endpoints, Mobile)</option>
+              <option value="Service">Service (APIs, Web Portals, Gateways)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="asset-form-importance">Criticality / Importance <span class="required">*</span></label>
+            <select id="asset-form-importance" class="form-select" required>
+              <option value="High">High (Mission Critical)</option>
+              <option value="Medium" selected>Medium (Operational)</option>
+              <option value="Low">Low (Supporting)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="asset-form-owner">Asset Owner / Responsible Team <span class="required">*</span></label>
+          <input type="text" id="asset-form-owner" class="form-input" required placeholder="e.g. Data Security Officer">
+        </div>
+
+        <div class="form-group">
+          <label for="asset-form-description">Description & Purpose</label>
+          <textarea id="asset-form-description" class="form-textarea" rows="3" placeholder="Explain the role and business purpose of this asset..."></textarea>
+        </div>
+
+        <div class="form-error" id="asset-error-msg" style="display: none;"></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-asset">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-asset">Save Asset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Risk Modal (Add / Edit) -->
+  <div class="modal-overlay" id="modal-risk">
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" id="risk-modal-title">Assess Cybersecurity Risk</h3>
+        <button class="btn-close" id="btn-close-risk-modal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="form-risk" class="modal-form">
+        <input type="hidden" id="risk-form-id">
+
+        <div class="form-group">
+          <label for="risk-form-title">Risk Title <span class="required">*</span></label>
+          <input type="text" id="risk-form-title" class="form-input" required placeholder="e.g. Ransomware Outbreak via Malicious Attachment">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="risk-form-asset">Linked Asset <span class="required">*</span></label>
+            <select id="risk-form-asset" class="form-select" required>
+              <option value="">-- Select Organizational Asset --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="risk-form-owner">Risk Owner / Custodian <span class="required">*</span></label>
+            <input type="text" id="risk-form-owner" class="form-input" required placeholder="e.g. Endpoint Security Lead">
+          </div>
+        </div>
+
+        <!-- Interactive 3x3 Scoring Evaluation Box -->
+        <div class="calculation-preview-box">
+          <div class="calc-header">
+            <span class="calc-title">Qualitative Risk Scoring Engine ($3 \times 3$ Matrix)</span>
+            <span class="calc-formula">Score = Likelihood &times; Impact</span>
+          </div>
+
+          <div class="form-row calc-inputs">
+            <div class="form-group">
+              <label for="risk-form-likelihood">Likelihood (Probability)</label>
+              <select id="risk-form-likelihood" class="form-select" required>
+                <option value="1">1 - Low (Unlikely / Rare event)</option>
+                <option value="2" selected>2 - Medium (Possible / Occasional)</option>
+                <option value="3">3 - High (Probable / Frequent)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="risk-form-impact">Impact (Consequence Severity)</label>
+              <select id="risk-form-impact" class="form-select" required>
+                <option value="1">1 - Low (Minor / Minimal disruption)</option>
+                <option value="2" selected>2 - Medium (Moderate / Noticeable damage)</option>
+                <option value="3">3 - High (Severe / Severe outage or loss)</option>
+              </select>
+            </div>
+
+            <!-- Real-time Computed Result Display -->
+            <div class="calc-result-display">
+              <div class="result-item">
+                <span class="result-lbl">Calculated Score</span>
+                <span class="result-score" id="preview-risk-score">4</span>
+              </div>
+              <div class="result-item">
+                <span class="result-lbl">Risk Level</span>
+                <span class="result-badge badge-medium" id="preview-risk-level">Medium</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="risk-form-consequence">Potential Impact / Consequence <span class="required">*</span></label>
+          <textarea id="risk-form-consequence" class="form-textarea" rows="2" required placeholder="Describe the specific damage or disruption to confidentiality, integrity, or availability..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="risk-form-status">Treatment Status</label>
+            <select id="risk-form-status" class="form-select">
+              <option value="Open" selected>Open (Identified & Pending)</option>
+              <option value="In Progress">In Progress (Mitigation active)</option>
+              <option value="Treated">Treated (Controls implemented)</option>
+              <option value="Closed">Closed (Risk accepted or mitigated)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="risk-form-notes">Mitigation & Remediation Notes</label>
+            <input type="text" id="risk-form-notes" class="form-input" placeholder="e.g. Deployed EDR agent, parameterized queries">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="risk-form-description">Detailed Threat Scenario Description</label>
+          <textarea id="risk-form-description" class="form-textarea" rows="2" placeholder="Optional background details on the threat scenario..."></textarea>
+        </div>
+
+        <div class="form-error" id="risk-error-msg" style="display: none;"></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-risk">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-risk">Save Risk Assessment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Application Scripts -->
+  <script src="/static/js/dashboard.js"></script>
+  <script src="/static/js/reports.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
