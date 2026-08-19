@@ -1,0 +1,13 @@
+# =============================================================================
+# GRC Risk Register - Python Dependencies
+# =============================================================================
+# This application is built entirely on the Python 3 Standard Library:
+#   - http.server (REST API & static web server)
+#   - sqlite3 (embedded ACID-compliant relational database)
+#   - hashlib & hmac (PBKDF2-HMAC-SHA256 password hashing)
+#   - secrets & uuid (cryptographic session token generation)
+#   - json, csv, urllib, posixpath (data serialization & routing)
+#
+# No external third-party pip dependencies are required for runtime.
+# Minimum required Python version: Python 3.8+
+# =============================================================================

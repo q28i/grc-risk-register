@@ -1,0 +1,71 @@
+# =============================================================================
+# GRC Risk Register - Git Ignore Configuration
+# =============================================================================
+
+# Private Administrator & Evaluation Notes
+README_ADMIN.md
+**/README_ADMIN.md
+
+# Database Files & SQLite Backups (Ensure clean clone initializes fresh DB)
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+**/*.db
+**/*.sqlite
+
+# Python Bytecode & Compilation Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# C# / Native Build Artifacts
+Launcher.cs
+*.pdb
+*.obj
+*.exe.config
+
+# Media Generation Scratch & Build Scripts
+assets_media/
+**/assets_media/
+build_ui_renders.py
+generate_pdf_report.py
+generate_pptx_presentation.py
+verify_*.py
+
+# Environment & Temporary Logs
+*.log
+*.zip
+runtime/
+**/runtime/
+release_export/
+presentation_copy/
+DELETE BEFORE PRESENTATION/
+**/DELETE BEFORE PRESENTATION/
+updates/
+**/updates/
+backups/
+**/backups/
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# IDE & Editor Configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Internal Documentation & Academic Reports (Distributed Separately)
+Documentation/
+**/Documentation/
+*.pdf
+*.pptx
+DOCUMENTATION_BUILD_LOG.md
