@@ -37,6 +37,9 @@ verify_*.py
 
 # Environment & Temporary Logs
 *.log
+*.zip
+runtime/
+**/runtime/
 .env
 .venv/
 env/

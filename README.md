@@ -21,13 +21,14 @@ A lightweight, standalone cybersecurity risk management web application designed
 
 ### Windows (One-Click Launcher)
 
-Double-click the plug-and-play launcher:
+Download the latest Windows release or clone the repository, then double-click:
 
 ```text
-Start GRC Risk Register.bat
+Start GRC Risk Register.exe
 ```
+*(or `Start GRC Risk Register.bat`)*
 
-The launcher will automatically start the background server, wait until it is ready, open your default browser to `http://127.0.0.1:8000`, and exit. The server will continue running independently in the background.
+The launcher automatically detects/provisions the runtime, initializes the database, starts the local server, opens your default browser at `http://127.0.0.1:8000`, and exits. The server continues running independently in the background.
 
 ### Manual Command Line (All Platforms)
 
