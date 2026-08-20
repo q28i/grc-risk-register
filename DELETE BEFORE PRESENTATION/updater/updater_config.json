@@ -1,0 +1,16 @@
+{
+  "repo": "q28i/grc-risk-register",
+  "api_url": "https://api.github.com/repos/q28i/grc-risk-register/releases/latest",
+  "asset_name": "GRC-Risk-Register-Windows.zip",
+  "check_on_startup": true,
+  "preserve_files": [
+    "grc_risk_register.db",
+    "grc_risk_register.db-journal",
+    "grc_risk_register.db-wal",
+    "grc_risk_register.db-shm",
+    "README_ADMIN.md",
+    "runtime",
+    "logs",
+    "updates"
+  ]
+}
