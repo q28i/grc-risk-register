@@ -1,113 +1,140 @@
 """
-GRC Risk Register — Safe Presentation Git Removal Tool
-=====================================================
-Safely removes the .git/ directory from a specified target copy of the project.
+GRC Risk Register — Automatic Safe Git History Removal Tool
+===========================================================
+Automatically discovers the installed project root relative to its own location,
+verifies safety markers, and removes all Git metadata without any user prompts.
 
 Safety Invariants:
-1. NEVER operates on the active working tree silently.
-2. Requires explicit target directory specification and user confirmation.
-3. Deletes ONLY the .git/ folder.
-4. Preserves all application source code, databases, templates, and documentation.
+1. NEVER prompts the user for paths or inputs.
+2. Automatically resolves PROJECT_ROOT by locating the parent containing "Grc Risk Management Code".
+3. Validates required installation safety markers before taking any action.
+4. Strictly scoped to the resolved PROJECT_ROOT (never touches external or parent directories).
+5. Deletes ONLY .git directories, .gitignore, .gitattributes, .gitmodules.
+6. Preserves all application source code, database, runtime, logs, and tools.
 """
 
 import os
 import sys
 import shutil
 import stat
-import argparse
 
 def remove_readonly(func, path, excinfo):
-    """Clear the read-only bit and retry removal."""
+    """Clear the read-only attribute and retry deletion."""
     try:
         os.chmod(path, stat.S_IWRITE)
         func(path)
     except Exception:
         pass
 
-def remove_git_history(target_dir, force=False):
-    target_path = os.path.abspath(target_dir)
+def find_project_root():
+    """Traverse upward from the current script location to locate the GRC project root."""
+    current = os.path.dirname(os.path.abspath(__file__))
+    
+    # Check current directory and up to 5 parent levels
+    for _ in range(6):
+        has_app_code = os.path.isdir(os.path.join(current, "Grc Risk Management Code"))
+        has_marker = (
+            os.path.exists(os.path.join(current, "Start GRC Risk Register.exe")) or
+            os.path.exists(os.path.join(current, "README.md")) or
+            os.path.exists(os.path.join(current, "requirements.txt"))
+        )
+        if has_app_code and has_marker:
+            return os.path.abspath(current)
+        
+        parent = os.path.dirname(current)
+        if parent == current:
+            break
+        current = parent
+        
+    return None
 
+def clean_git_metadata(project_root):
+    """Recursively removes all Git metadata and repository history from project_root."""
     print("=======================================================")
-    print("  GRC Risk Register — Presentation Git Removal Tool")
+    print("  GRC Risk Register — Git History Removal Tool")
     print("=======================================================")
-    print(f"\nTarget directory: {target_path}")
+    print(f"\n[INFO] Target Project Root: {project_root}")
 
-    if not os.path.isdir(target_path):
-        print(f"[ERROR] Target directory does not exist: {target_path}")
-        return False
+    removed_items = []
+    failed_items = []
 
-    git_dir = os.path.join(target_path, ".git")
+    # 1. Search and delete all .git directories recursively inside project_root
+    for root, dirs, files in os.walk(project_root, topdown=False):
+        for d in list(dirs):
+            if d.lower() == ".git":
+                git_dir_path = os.path.join(root, d)
+                print(f"[REMOVING] Deleting Git repository folder: {git_dir_path}")
+                try:
+                    # Clear read-only attributes recursively
+                    for sub_root, sub_dirs, sub_files in os.walk(git_dir_path):
+                        for sf in sub_files:
+                            try: os.chmod(os.path.join(sub_root, sf), stat.S_IWRITE)
+                            except Exception: pass
+                        for sd in sub_dirs:
+                            try: os.chmod(os.path.join(sub_root, sd), stat.S_IWRITE)
+                            except Exception: pass
+                    
+                    shutil.rmtree(git_dir_path, onerror=remove_readonly)
+                    if not os.path.exists(git_dir_path):
+                        removed_items.append(git_dir_path)
+                    else:
+                        failed_items.append(git_dir_path)
+                except Exception as e:
+                    print(f"[ERROR] Could not delete {git_dir_path}: {e}")
+                    failed_items.append(git_dir_path)
 
-    if not os.path.exists(git_dir):
-        print(f"[INFO] No .git directory found at: {git_dir}")
-        print("[INFO] Nothing to remove.")
+    # 2. Search and delete Git configuration/metadata files
+    git_filenames = {".gitignore", ".gitattributes", ".gitmodules"}
+    for root, dirs, files in os.walk(project_root):
+        for f in files:
+            if f.lower() in git_filenames:
+                file_path = os.path.join(root, f)
+                print(f"[REMOVING] Deleting Git configuration file: {file_path}")
+                try:
+                    os.chmod(file_path, stat.S_IWRITE)
+                    os.remove(file_path)
+                    removed_items.append(file_path)
+                except Exception as e:
+                    print(f"[ERROR] Could not delete {file_path}: {e}")
+                    failed_items.append(file_path)
+
+    # 3. Post-cleanup recursive audit
+    remaining_git = []
+    for root, dirs, files in os.walk(project_root):
+        for d in dirs:
+            if d.lower() == ".git":
+                remaining_git.append(os.path.join(root, d))
+        for f in files:
+            if f.lower() in git_filenames:
+                remaining_git.append(os.path.join(root, f))
+
+    print("\n=======================================================")
+    print("  CLEANUP SUMMARY")
+    print("=======================================================")
+    print(f"Items removed:   {len(removed_items)}")
+    print(f"Items failed:    {len(failed_items)}")
+    print(f"Remaining .git:  {len(remaining_git)}")
+
+    if len(remaining_git) == 0 and len(failed_items) == 0:
+        print("\n[SUCCESS] Project is 100% clean of all Git metadata and version control history.")
+        print("Source code, presentation database, and application runtime are intact.")
         return True
-
-    print(f"[FOUND] Git version history found at: {git_dir}")
-    print("\nWARNING: This will permanently delete the Git history from THIS target copy.")
-    print("Source files, templates, and database will remain completely untouched.")
-    print("=======================================================")
-
-    if not force:
-        try:
-            confirm = input(f"\nAre you sure you want to permanently remove Git history from THIS COPY? (Y/N): ").strip().upper()
-        except (KeyboardInterrupt, EOFError):
-            print("\nOperation cancelled.")
-            return False
-
-        if confirm not in ("Y", "YES"):
-            print("[CANCELLED] Operation cancelled by user. No changes made.")
-            return False
-
-    print("\n[REMOVING] Deleting .git directory...")
-    try:
-        # Clear attributes and remove tree
-        for root, dirs, files in os.walk(git_dir):
-            for f in files:
-                p = os.path.join(root, f)
-                try: os.chmod(p, stat.S_IWRITE)
-                except Exception: pass
-            for d in dirs:
-                p = os.path.join(root, d)
-                try: os.chmod(p, stat.S_IWRITE)
-                except Exception: pass
-
-        shutil.rmtree(git_dir, onerror=remove_readonly)
-
-        if not os.path.exists(git_dir):
-            print(f"[SUCCESS] Git history (.git/) removed successfully from:\n  {target_path}")
-            return True
-        else:
-            print(f"[ERROR] Failed to completely remove .git directory.")
-            return False
-    except Exception as e:
-        print(f"[ERROR] Exception during removal: {e}")
+    else:
+        print(f"\n[WARNING] Some Git artifacts could not be removed: {remaining_git + failed_items}")
         return False
 
 def main():
-    parser = argparse.ArgumentParser(description="Safely remove .git history from a target presentation copy.")
-    parser.add_argument("target", nargs="?", default="", help="Path to target directory to clean")
-    parser.add_argument("-y", "--yes", action="store_true", help="Skip confirmation prompt")
-    args = parser.parse_args()
-
-    target = args.target.strip()
-    if not target:
+    root = find_project_root()
+    if not root:
         print("=======================================================")
-        print("  GRC Risk Register — Presentation Git Removal Tool")
+        print("  GRC Risk Register — Git History Removal Tool")
         print("=======================================================")
-        print("\nPlease enter the path to the presentation copy folder you wish to clean.")
-        print("Example: C:\\Users\\Name\\Desktop\\Presentation Copy\n")
-        try:
-            target = input("Enter target folder path: ").strip()
-        except (KeyboardInterrupt, EOFError):
-            print("\nOperation cancelled.")
-            sys.exit(1)
+        print("\n[ABORTED] Could not automatically locate the GRC project root.")
+        print("Safety check failed: 'Grc Risk Management Code' folder not found in parent hierarchy.")
+        print("Refusing to operate on unknown directory.")
+        sys.exit(1)
 
-        if not target:
-            print("[ERROR] No target folder specified. Refusing to operate on unknown directory.")
-            sys.exit(1)
-
-    success = remove_git_history(target, force=args.yes)
+    success = clean_git_metadata(root)
     sys.exit(0 if success else 1)
 
 if __name__ == "__main__":
