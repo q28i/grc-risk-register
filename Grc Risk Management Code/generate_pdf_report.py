@@ -650,32 +650,31 @@ def build_academic_pdf():
     story.append(Spacer(1, 25))
 
     loa_data = [
-        [Paragraph("<b>Abbreviation</b>", table_header), Paragraph("<b>Full Form</b>", table_header)],
-        [Paragraph("SDLC", table_cell), Paragraph("Software Development Life Cycle", table_cell)],
-        [Paragraph("DFD", table_cell), Paragraph("Data Flow Diagram", table_cell)],
-        [Paragraph("ER Diagram", table_cell), Paragraph("Entity-Relationship Diagram", table_cell)],
-        [Paragraph("UML", table_cell), Paragraph("Unified Modeling Language", table_cell)],
-        [Paragraph("GUI", table_cell), Paragraph("Graphical User Interface", table_cell)],
-        [Paragraph("SQL", table_cell), Paragraph("Structured Query Language", table_cell)],
-        [Paragraph("IDE", table_cell), Paragraph("Integrated Development Environment", table_cell)],
-        [Paragraph("GRC", table_cell), Paragraph("Governance, Risk, and Compliance", table_cell)],
-        [Paragraph("OS", table_cell), Paragraph("Operating System", table_cell)],
-        [Paragraph("RAM", table_cell), Paragraph("Random Access Memory", table_cell)],
-        [Paragraph("UI/UX", table_cell), Paragraph("User Interface / User Experience", table_cell)],
-        [Paragraph("CRUD", table_cell), Paragraph("Create, Read, Update, Delete", table_cell)],
-        [Paragraph("RBAC", table_cell), Paragraph("Role-Based Access Control", table_cell)],
-        [Paragraph("HMAC", table_cell), Paragraph("Hash-based Message Authentication Code", table_cell)],
-        [Paragraph("PBKDF2", table_cell), Paragraph("Password-Based Key Derivation Function 2", table_cell)],
-        [Paragraph("SHA", table_cell), Paragraph("Secure Hash Algorithm", table_cell)],
+        [Paragraph("<b>Abbreviation</b>", table_header), Paragraph("<b>Full Form & Technical Meaning</b>", table_header)],
+        [Paragraph("ACID", table_cell), Paragraph("<b>Atomicity, Consistency, Isolation, Durability:</b> Database transaction guarantees that ensure records are never half-written or corrupted during failures.", table_cell)],
+        [Paragraph("PBKDF2", table_cell), Paragraph("<b>Password-Based Key Derivation Function 2:</b> Key stretching algorithm applying repeated pseudorandom hashing rounds to defeat brute-force password cracking.", table_cell)],
+        [Paragraph("HMAC", table_cell), Paragraph("<b>Hash-based Message Authentication Code:</b> Cryptographic construction combining a secret key with a hash function for message authenticity and data integrity.", table_cell)],
+        [Paragraph("SHA-256", table_cell), Paragraph("<b>Secure Hash Algorithm (256-bit):</b> Cryptographic one-way hash function producing a 32-byte deterministic fingerprint.", table_cell)],
+        [Paragraph("GRC", table_cell), Paragraph("<b>Governance, Risk, and Compliance:</b> Strategy for managing IT risk and aligning technology with regulatory compliance standards.", table_cell)],
+        [Paragraph("RBAC", table_cell), Paragraph("<b>Role-Based Access Control:</b> Security mechanism restricting system access permissions based on authorized user roles (Admin vs. Analyst).", table_cell)],
+        [Paragraph("NIST", table_cell), Paragraph("<b>National Institute of Standards and Technology:</b> U.S. federal agency establishing cybersecurity standards (e.g., NIST SP 800-30 for risk assessment).", table_cell)],
+        [Paragraph("SDLC", table_cell), Paragraph("<b>Software Development Life Cycle:</b> Structured framework for designing, implementing, testing, and deploying reliable software.", table_cell)],
+        [Paragraph("DFD", table_cell), Paragraph("<b>Data Flow Diagram:</b> Graphical representation tracing the flow and transformation of data through system processes.", table_cell)],
+        [Paragraph("ER Diagram", table_cell), Paragraph("<b>Entity-Relationship Diagram:</b> Database schema model illustrating tables, primary/foreign keys, and relational cardinality.", table_cell)],
+        [Paragraph("UML", table_cell), Paragraph("<b>Unified Modeling Language:</b> Standard software engineering modeling language for visualizing architecture, classes, and sequences.", table_cell)],
+        [Paragraph("CRUD", table_cell), Paragraph("<b>Create, Read, Update, Delete:</b> The four fundamental persistent operations of storage applications.", table_cell)],
+        [Paragraph("GUI", table_cell), Paragraph("<b>Graphical User Interface:</b> Visual display elements (buttons, inputs, tables) allowing intuitive interaction without command lines.", table_cell)],
+        [Paragraph("SQL", table_cell), Paragraph("<b>Structured Query Language:</b> Declarative domain-specific language for managing structured relational database records.", table_cell)],
+        [Paragraph("IDE", table_cell), Paragraph("<b>Integrated Development Environment:</b> Software application providing comprehensive tools (editor, debugger) for software engineering.", table_cell)],
     ]
-    t_loa = Table(loa_data, colWidths=[130, 370])
+    t_loa = Table(loa_data, colWidths=[90, 410])
     t_loa.setStyle(TableStyle([
         ('BOX', (0,0), (-1,-1), 0.5, CLR_BORDER_DARK),
         ('GRID', (0,0), (-1,-1), 0.5, CLR_BORDER),
         ('BACKGROUND', (0,0), (-1,0), CLR_BG_LIGHT),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-        ('TOPPADDING', (0,0), (-1,-1), 4.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4.5),
+        ('TOPPADDING', (0,0), (-1,-1), 3.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3.5),
     ]))
     story.append(t_loa)
 
@@ -820,11 +819,11 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>3.2 Non-Functional Requirements</b>", h2_section))
     story.append(Paragraph("• <b>Usability:</b> Clean single-page browser interface with interactive modal forms and real-time calculation previews.", bullet))
-    story.append(Paragraph("• <b>Reliability:</b> Complete ACID transactional safety with enforced foreign keys in SQLite.", bullet))
+    story.append(Paragraph("• <b>Reliability (ACID Guarantees):</b> Complete ACID transactional safety (<i>Atomicity</i>: all-or-nothing commits; <i>Consistency</i>: foreign-key validation; <i>Isolation</i>: serial database operations; <i>Durability</i>: write-ahead logging to disk) via SQLite.", bullet))
     story.append(Paragraph("• <b>Performance:</b> API query and calculation response times under 50 milliseconds on standard hardware.", bullet))
-    story.append(Paragraph("• <b>Security:</b> Cryptographic password hashing (PBKDF2-HMAC-SHA256) and secure random session tokens.", bullet))
+    story.append(Paragraph("• <b>Security (Cryptographic Hashing):</b> Passwords protected via <b>PBKDF2-HMAC-SHA256</b> (Password-Based Key Derivation Function 2 using Hash-based Message Authentication with SHA-256) running 100,000 iterative hashing rounds with 16-byte random salts to defeat brute-force and rainbow table attacks.", bullet))
     story.append(Paragraph("• <b>Portability:</b> Native execution on Python 3 with zero external pip package dependencies.", bullet))
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("<b>3.3 Hardware Requirements</b>", h2_section))
     hw_data = [
@@ -1026,7 +1025,7 @@ def build_academic_pdf():
     ))
 
     story.append(Paragraph("<b>5.2 Module Description</b>", h2_section))
-    story.append(Paragraph("<b>5.2.1 Login Module:</b> Manages user authentication using salted PBKDF2-HMAC-SHA256 password hashing with 100,000 iterations. Validates active session tokens and restricts access based on user role (Admin or Analyst).", body))
+    story.append(Paragraph("<b>5.2.1 Login Module:</b> Manages user authentication using salted <b>PBKDF2-HMAC-SHA256</b> (Password-Based Key Derivation Function 2 with Hash-based Message Authentication Code using SHA-256). For each credential verification, the system combines the plaintext password with a unique 16-byte random salt and executes 100,000 recursive hashing rounds. This deliberate computational cost makes offline dictionary and rainbow-table attacks unfeasible. Validates active cryptographically secure session tokens and enforces Role-Based Access Control (Admin vs. Analyst).", body))
     story.append(Paragraph("<b>5.2.2 Asset Management Module:</b> Provides endpoints for registering, editing, and soft-archiving organizational assets. Validates required names, classifies types, and ensures asset records cannot be hard-deleted if referenced by risks.", body))
     story.append(Paragraph("<b>5.2.3 Risk Assessment Module:</b> Manages the creation and tracking of threat scenarios linked to specific assets. Enforces allowed status transitions across Open, In Progress, Treated, and Closed.", body))
     story.append(Paragraph("<b>5.2.4 Calculation Module:</b> Implements the qualitative 3x3 evaluation engine. Computes the product of Likelihood and Impact ratings and maps scores to discrete severity categories (Low: 1-2, Medium: 3-4, High: 6-9).", body))
