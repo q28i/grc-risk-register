@@ -122,20 +122,15 @@ class GRCRequestHandler(BaseHTTPRequestHandler):
         except json.JSONDecodeError:
             raise ValidationError("Invalid JSON payload.")
 
-    # ------------------------------------------------------------------
-    # GET ROUTING
-    # ------------------------------------------------------------------
     def do_GET(self) -> None:
         parsed_url = urllib.parse.urlparse(self.path)
         path = parsed_url.path
         query = urllib.parse.parse_qs(parsed_url.query)
 
-        # 1. API Routes
         if path.startswith("/api/"):
             self.handle_api_get(path, query)
             return
 
-        # 2. HTML Templates
         if path in ("/", "/index.html", "/dashboard", "/assets", "/risks", "/reports", "/profile", "/matrix"):
             self.serve_file(os.path.join(TEMPLATES_DIR, "index.html"), "text/html; charset=utf-8")
             return
@@ -259,9 +254,6 @@ class GRCRequestHandler(BaseHTTPRequestHandler):
 
         self.send_error_json(404, f"API endpoint '{path}' not found.")
 
-    # ------------------------------------------------------------------
-    # POST ROUTING
-    # ------------------------------------------------------------------
     def do_POST(self) -> None:
         parsed_url = urllib.parse.urlparse(self.path)
         path = parsed_url.path
@@ -272,7 +264,7 @@ class GRCRequestHandler(BaseHTTPRequestHandler):
             self.send_error_json(400, str(e))
             return
 
-        # Auth Login
+        # Authentication endpoints
         if path == "/api/auth/login":
             username = str(body.get("username", "")).strip().lower()
             password = str(body.get("password", ""))
@@ -422,9 +414,6 @@ class GRCRequestHandler(BaseHTTPRequestHandler):
 
         self.send_error_json(404, f"POST endpoint '{path}' not found.")
 
-    # ------------------------------------------------------------------
-    # PUT ROUTING
-    # ------------------------------------------------------------------
     def do_PUT(self) -> None:
         parsed_url = urllib.parse.urlparse(self.path)
         path = parsed_url.path

@@ -7,6 +7,12 @@ import unittest
 import sys
 import os
 
+# Clear proxy variables for local loopback testing
+for var in ["http_proxy", "https_proxy", "HTTP_PROXY", "HTTPS_PROXY"]:
+    os.environ.pop(var, None)
+os.environ["NO_PROXY"] = "127.0.0.1,localhost"
+os.environ["no_proxy"] = "127.0.0.1,localhost"
+
 # Set current working directory
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 

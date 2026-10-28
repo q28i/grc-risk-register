@@ -3,9 +3,7 @@
  * Pure Vanilla JavaScript SPA Controller with zero external library dependencies.
  */
 
-// ============================================================================
-// 1. API CLIENT WRAPPER
-// ============================================================================
+// API client wrapper
 const ApiClient = {
   getToken() {
     return localStorage.getItem('grc_session_token');
@@ -70,9 +68,7 @@ const ApiClient = {
   }
 };
 
-// ============================================================================
-// 2. MAIN APPLICATION CONTROLLER
-// ============================================================================
+// Main application controller
 const App = {
   currentUser: null,
   currentTab: 'dashboard',
@@ -362,9 +358,7 @@ const App = {
   }
 };
 
-// ============================================================================
-// 3. ASSET CONTROLLER
-// ============================================================================
+// Asset controller
 const AssetController = {
   assets: [],
 
@@ -612,9 +606,7 @@ const AssetController = {
   }
 };
 
-// ============================================================================
-// 4. RISK CONTROLLER (WITH DYNAMIC CALCULATION PREVIEW)
-// ============================================================================
+// Risk controller (with real-time calculation preview)
 const RiskController = {
   risks: [],
 
@@ -948,9 +940,7 @@ const RiskController = {
   }
 };
 
-// ============================================================================
-// 5. PROFILE & AUDIT CONTROLLER (WITH DEMO FEATURE CONTROLS FOR ADMIN)
-// ============================================================================
+// Profile and audit controller
 const ProfileController = {
   init() {
     const formFC = document.getElementById('form-feature-controls');

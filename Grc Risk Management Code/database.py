@@ -230,9 +230,7 @@ def init_db(db_path: Optional[str] = None) -> None:
     conn.close()
 
 
-# ----------------------------------------------------------------------
-# FEATURE CONTROLS REPOSITORY
-# ----------------------------------------------------------------------
+# Feature controls repository
 
 def get_feature_controls(db_path: Optional[str] = None) -> List[Dict[str, Any]]:
     """Retrieves all feature control records ordered by logical category priority and id."""
@@ -309,9 +307,7 @@ def update_feature_controls(controls: Dict[str, bool], user_id: Optional[int] = 
 
 
 
-# ----------------------------------------------------------------------
-# AUDIT LOGGING
-# ----------------------------------------------------------------------
+# Audit logging
 
 def log_event(action: str, entity_type: str, entity_id: str, details: str,
               user_id: Optional[int] = None, username: str = "system", db_path: Optional[str] = None) -> None:
@@ -345,9 +341,7 @@ def get_audit_logs(limit: int = 100, db_path: Optional[str] = None) -> List[Dict
         conn.close()
 
 
-# ----------------------------------------------------------------------
-# USER REPOSITORY
-# ----------------------------------------------------------------------
+# User repository
 
 def get_user_by_username(username: str, db_path: Optional[str] = None) -> Optional[Dict[str, Any]]:
     path = get_db_path(db_path)
@@ -379,9 +373,7 @@ def get_all_users(db_path: Optional[str] = None) -> List[Dict[str, Any]]:
         conn.close()
 
 
-# ----------------------------------------------------------------------
-# ASSET REPOSITORY
-# ----------------------------------------------------------------------
+# Asset repository
 
 def get_next_asset_code(cursor: sqlite3.Cursor) -> str:
     """Generates the next sequential AST-xxx code."""
@@ -539,9 +531,7 @@ def unarchive_asset(asset_id: int, user_id: Optional[int] = None,
         conn.close()
 
 
-# ----------------------------------------------------------------------
-# RISK REPOSITORY
-# ----------------------------------------------------------------------
+# Risk repository
 
 def get_next_risk_code(cursor: sqlite3.Cursor) -> str:
     """Generates the next sequential RSK-xxx code."""
@@ -729,9 +719,7 @@ def unarchive_risk(risk_id: int, user_id: Optional[int] = None,
         conn.close()
 
 
-# ----------------------------------------------------------------------
-# DASHBOARD METRICS AGGREGATION
-# ----------------------------------------------------------------------
+# Dashboard metrics aggregation
 
 def get_dashboard_metrics(db_path: Optional[str] = None) -> Dict[str, Any]:
     """Computes all summary cards, level breakdown, status counts, and 3x3 heatmap data."""
