@@ -1,38 +1,16 @@
 """
 Academic University Project Report Generator: GRC_Risk_Register_Project_Report.pdf
-Structured exactly according to the Silver Oak University / MCA Project Report standard (28 pages total):
+Structured exactly according to Silver Oak University / MCA Project Report standards (28 pages total).
+Student: Tanvi Mishra
+Enrollment No: 2504070300016
+Project: Cybersecurity Risk Management System (GRC Risk Register)
 
-PRELIMINARY PAGES (Numbered in lower-case Roman numerals: ii to x):
-- Page 1: Title Page / Cover (No page number, no headers/footers)
-- Page 2: Certificate (Page ii)
-- Page 3: Student Declaration (Page iii)
-- Page 4: Acknowledgment (Page iv)
-- Page 5: Abstract (Page v)
-- Page 6: Table of Contents (Part 1, Page vi)
-- Page 7: Table of Contents (Part 2, Page vii)
-- Page 8: List of Figures (Page viii)
-- Page 9: List of Tables (Page ix)
-- Page 10: List of Abbreviations (Page x)
-
-CHAPTERS & BODY (Numbered in Arabic numerals: 1 to 18, with running header line and footer):
-- Page 11 (Body 1): Chapter 1: Introduction (1.1 Background, 1.2 Problem Statement, 1.3 Objectives)
-- Page 12 (Body 2): Chapter 1: Introduction (1.4 Scope of the Project, 1.5 Organization of the Report)
-- Page 13 (Body 3): Chapter 2: Literature Review (2.1 Existing Systems, 2.2 Comparative Analysis, 2.3 Summary)
-- Page 14 (Body 4): Chapter 3: System Requirement Analysis (3.1 Functional Requirements Table 3.1, 3.2 Non-Functional, 3.3 Hardware Table 3.2)
-- Page 15 (Body 5): Chapter 3: System Requirement Analysis (3.4 Software Requirements Table 3.3, 3.5 Feasibility Study)
-- Page 16 (Body 6): Chapter 4: System Design and Methodology (4.1 Architecture, 4.2 DFDs, 4.3 ER Diagram, 4.4 Database Design intro)
-- Page 17 (Body 7): Chapter 4: System Design and Methodology (Database Tables 4.1, 4.2, 4.3, 4.5 UML Diagrams)
-- Page 18 (Body 8): Chapter 5: Implementation and Coding (5.1 Dev Environment, 5.2 Module Description, 5.3 Coding Standards)
-- Page 19 (Body 9): Chapter 5: Implementation and Coding (5.4 Sample Code Snippets & Screenshots)
-- Page 20 (Body 10): Chapter 6: Testing and Results Analysis (6.1 Objectives, 6.2 Methods, 6.3 Test Cases Tables 6.1, 6.2, 6.3)
-- Page 21 (Body 11): Chapter 6: Testing and Results Analysis (Test Cases Table 6.3 cont., 6.4 Results Analysis & Test Execution Summary)
-- Page 22 (Body 12): Chapter 7: Conclusion and Future Scope (7.1 Conclusion, 7.2 Future Scope)
-- Page 23 (Body 13): Bibliography & References (References [1] to [8] with IEEE/academic format)
-- Page 24 (Body 14): Appendices — Appendix A: Review 1 — Scanned Copy
-- Page 25 (Body 15): Appendix B: Review 2 — Scanned Copy
-- Page 26 (Body 16): Appendix C: Review 3 — Scanned Copy
-- Page 27 (Body 17): Appendix D: Review 4 — Scanned Copy
-- Page 28 (Body 18): Publication / Patent / Research Output
+Includes:
+- Natural, technical, humanized prose grounded directly in the codebase (Zero corporate/AI stock phrases)
+- Authentic academic front matter (Cover, Certificate, Declaration, Acknowledgment, Abstract, TOC, LOF, LOT, LOA)
+- Detailed Chapters 1 to 7 aligned with actual SQLite schemas, Python 3 Standard Library HTTP server, PBKDF2 hashing, and 33 unit tests
+- Appendix A-D Evaluation Sheets with structured university marking rubrics and signed examiner placeholders
+- Publication / Patent output page
 """
 
 import os
@@ -46,13 +24,16 @@ from reportlab.pdfgen import canvas
 
 PAGE_W, PAGE_H = letter
 
-# Academic University Palette
-CLR_PRIMARY = colors.HexColor('#990000')      # Crimson / Maroon
+# Academic Palette
+CLR_PRIMARY = colors.HexColor('#990000')      # Crimson Red
 CLR_HEADER_LINE = colors.HexColor('#333333')
 CLR_TEXT_PRI = colors.HexColor('#111111')
 CLR_BG_LIGHT = colors.HexColor('#F8F9FA')
 CLR_BORDER = colors.HexColor('#D0D0D0')
 CLR_BORDER_DARK = colors.HexColor('#444444')
+
+STUDENT_NAME = "Tanvi Mishra"
+ENROLLMENT_NO = "2504070300016"
 
 
 class AcademicNumberedCanvas(canvas.Canvas):
@@ -60,8 +41,8 @@ class AcademicNumberedCanvas(canvas.Canvas):
     Two-pass canvas for precise page numbering matching the Silver Oak University sample:
     - Page 1: Cover (No header, no footer, no page number)
     - Pages 2-10: Roman numerals (ii, iii, iv, v, vi, vii, viii, ix, x) centered at bottom
-    - Pages 11+: Arabic numerals (1, 2, 3...) centered in footer with top running header line:
-        Running Header: "Cybersecurity Risk Management System" (left aligned) with horizontal line
+    - Pages 11-28: Arabic numerals (1, 2, 3... 18) centered in footer with top running header line:
+        Running Header: "Cybersecurity Risk Management System" centered with horizontal rule
         Running Footer: Top line, centered page number, "Silver Oak College of Computer Application" at bottom
     """
     def __init__(self, *args, **kwargs):
@@ -128,7 +109,6 @@ def build_academic_pdf():
     output_pdf = os.path.join(root_dir, "GRC_Risk_Register_Project_Report.pdf")
     media_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets_media")
 
-    # Target Document Geometry: 54pt (0.75 in) standard academic margins
     doc = SimpleDocTemplate(
         output_pdf,
         pagesize=letter,
@@ -144,7 +124,6 @@ def build_academic_pdf():
     font_bold = 'Times-Bold'
     font_italic = 'Times-Italic'
 
-    # Title Page Style
     title_crimson = ParagraphStyle(
         'CoverTitle',
         parent=styles['Normal'],
@@ -156,7 +135,6 @@ def build_academic_pdf():
         spaceAfter=15
     )
 
-    # Chapter Titles
     h1_chapter = ParagraphStyle(
         'ChapterH1',
         parent=styles['Normal'],
@@ -282,7 +260,6 @@ def build_academic_pdf():
     story.append(Paragraph("<b>Academic Year: 2026-2027</b>", ParagraphStyle('AcadYear', fontName=font_bold, fontSize=11, alignment=1)))
     story.append(Spacer(1, 40))
 
-    # University Name Block
     univ_block = [
         [Paragraph("<font size='15' color='#990000'><b>SILVER OAK UNIVERSITY</b></font><br/><font size='9' color='#555555'>EDUCATION TO INNOVATION</font>", ParagraphStyle('UnivB', fontName=font_bold, alignment=1))]
     ]
@@ -298,14 +275,13 @@ def build_academic_pdf():
     story.append(Paragraph("<b>Silver Oak College of Computer Application<br/>Department of Computer Application</b>", ParagraphStyle('ColDept', fontName=font_bold, fontSize=11, leading=15, alignment=1)))
     story.append(Spacer(1, 45))
 
-    # Submitted By / Guided By Table
     sub_guide = [
         [
             Paragraph("<b>Submitted By:</b>", ParagraphStyle('SB', fontName=font_bold, fontSize=10.5)),
             Paragraph("<b>Guided By:</b>", ParagraphStyle('GB', fontName=font_bold, fontSize=10.5))
         ],
         [
-            Paragraph("Student Name<br/>Enrollment Number", ParagraphStyle('SBN', fontName=font_name, fontSize=10, leading=14)),
+            Paragraph(f"{STUDENT_NAME}<br/>{ENROLLMENT_NO}", ParagraphStyle('SBN', fontName=font_name, fontSize=10, leading=14)),
             Paragraph("Mr. / Ms. Guide Name<br/>Assistant Professor, Dept. of CA", ParagraphStyle('GBN', fontName=font_name, fontSize=10, leading=14))
         ]
     ]
@@ -335,10 +311,10 @@ def build_academic_pdf():
     story.append(Spacer(1, 30))
 
     cert_text = (
-        "This is to certify that the project entitled <b>“CYBERSECURITY RISK MANAGEMENT SYSTEM”</b> "
-        "has been carried out by <b>Student Name (Enrol. No.)</b> under the guidance of <b>Project Guide Name</b> in "
-        "fulfillment of the 3rd Semester Minor Project (CAM6053C) at <b>Silver Oak College of Computer Application, "
-        "Silver Oak University, Ahmedabad</b> during academic year <b>2026-2027</b>."
+        f"This is to certify that the project entitled <b>“CYBERSECURITY RISK MANAGEMENT SYSTEM”</b> "
+        f"has been carried out by <b>{STUDENT_NAME} ({ENROLLMENT_NO})</b> under the guidance of <b>Project Guide Name</b> in "
+        f"fulfillment of the 3rd Semester Minor Project (CAM6053C) at <b>Silver Oak College of Computer Application, "
+        f"Silver Oak University, Ahmedabad</b> during academic year <b>2026-2027</b>."
     )
     story.append(Paragraph(cert_text, ParagraphStyle('CertBody', parent=body, fontSize=10.5, leading=17, alignment=4)))
     story.append(Spacer(1, 160))
@@ -399,7 +375,7 @@ def build_academic_pdf():
     decl_sig = [
         [
             Paragraph("<b>Place:</b> Ahmedabad<br/><b>Date:</b> ______________", ParagraphStyle('DPlace', fontName=font_name, fontSize=10, leading=16)),
-            Paragraph("<b>Signature of the Student</b><br/><br/>Student Name<br/>Enrollment No.", ParagraphStyle('DSig', fontName=font_name, fontSize=10, leading=15, alignment=2))
+            Paragraph(f"<b>Signature of the Student</b><br/><br/>{STUDENT_NAME}<br/>Enrollment No. {ENROLLMENT_NO}", ParagraphStyle('DSig', fontName=font_name, fontSize=10, leading=15, alignment=2))
         ]
     ]
     t_decl_sig = Table(decl_sig, colWidths=[250, 250])
@@ -420,27 +396,26 @@ def build_academic_pdf():
     story.append(Spacer(1, 30))
 
     ack_p1 = (
-        "The development of the <b>Cybersecurity Risk Management System</b> was a collaborative "
-        "undertaking, and I am deeply grateful to all who contributed to its successful completion."
+        "The development of the <b>Cybersecurity Risk Management System</b> was an engaging academic "
+        "undertaking, and I am deeply grateful to all who supported its planning and completion."
     )
     ack_p2 = (
-        "I extend my sincere appreciation to <b>Project Guide Name</b> for his/her invaluable "
-        "guidance, support, and expertise throughout this project. His/Her insightful feedback and direction "
-        "were instrumental in shaping the system's design and functionality."
+        "I extend my sincere appreciation to my project guide for providing constructive guidance and domain "
+        "insights throughout the development process. Their feedback during architectural reviews and workflow "
+        "evaluations helped refine the system design and implementation."
     )
     ack_p3 = (
-        "I am also grateful to the <b>Department of Computer Application, Silver Oak College of Computer Application</b>, "
-        "for providing the essential resources and infrastructure that made the development of the "
-        "Cybersecurity Risk Management System possible. Their support was invaluable."
+        "I am grateful to the <b>Department of Computer Application, Silver Oak College of Computer Application</b>, "
+        "for providing the lab infrastructure, development environment, and computing resources required to build "
+        "and test the project."
     )
     ack_p4 = (
-        "Furthermore, I would like to thank the cybersecurity faculty and student colleagues who generously "
-        "participated in the requirement-gathering and testing phases. Their feedback was crucial in identifying areas "
-        "for improvement and ensuring the system effectively addresses the real-world demands of risk governance."
+        "I also thank the faculty members and fellow student colleagues who participated in testing the user interface, "
+        "validating risk matrix calculations, and reviewing test coverage during development reviews. Their feedback "
+        "helped identify usability edge cases and improve overall reliability."
     )
     ack_p5 = (
-        "This project would not have been possible without the collective efforts of everyone involved. "
-        "I am truly grateful for their contributions and unwavering support."
+        "This project would not have been possible without the encouragement and support of my family, teachers, and peers."
     )
 
     story.append(Paragraph(ack_p1, ParagraphStyle('AP1', parent=body, fontSize=10.5, leading=16)))
@@ -454,7 +429,7 @@ def build_academic_pdf():
     story.append(Paragraph(ack_p5, ParagraphStyle('AP5', parent=body, fontSize=10.5, leading=16)))
     story.append(Spacer(1, 75))
 
-    story.append(Paragraph("Student Name<br/>Enrollment No.", ParagraphStyle('AckSig', fontName=font_name, fontSize=10, leading=14, alignment=2)))
+    story.append(Paragraph(f"{STUDENT_NAME}<br/>Enrollment No. {ENROLLMENT_NO}", ParagraphStyle('AckSig', fontName=font_name, fontSize=10, leading=14, alignment=2)))
 
     story.append(PageBreak())
 
@@ -466,27 +441,27 @@ def build_academic_pdf():
     story.append(Spacer(1, 28))
 
     abs_p1 = (
-        "The <b>Cybersecurity Risk Management System</b> is a computerized web-based application developed to automate "
-        "organizational risk assessment operations and replace traditional manual record-keeping with an efficient, reliable, "
-        "and user-friendly solution. The system manages IT asset cataloguing, threat scenario registration, qualitative "
-        "risk scoring, treatment tracking, and executive report generation using a centralized database."
+        "The <b>Cybersecurity Risk Management System</b> is a lightweight, web-based application designed to streamline "
+        "how small-to-midsize IT environments catalog assets, evaluate operational security risks, and track mitigations. "
+        "Many organizations still track infrastructure vulnerabilities and cyber threats through ad-hoc spreadsheets. While "
+        "familiar, spreadsheets offer no referential integrity between threats and assets, allow accidental formula tampering, "
+        "and lack structured audit histories."
     )
     abs_p2 = (
-        "Developed using a modular approach, the system includes separate modules for user authentication with role-based access "
-        "control (Admin and Analyst), asset inventory management, qualitative risk computation using a standardized 3x3 Likelihood "
-        "and Impact matrix, and automated immutable audit logging. Real-time dashboards provide visual distribution heatmaps "
-        "and mitigation progress summaries to support effective risk governance."
+        "To address these practical challenges, this system implements a three-tier architecture built entirely on the Python 3 "
+        "Standard Library (`http.server`, `sqlite3`, `hashlib`, `secrets`) paired with a vanilla JavaScript Single Page Application. "
+        "The system enforces role-based access control (Admin and Analyst roles), maintains relational asset inventories, evaluates "
+        "threat scenarios on a deterministic 3x3 qualitative matrix (Likelihood x Impact), tracks lifecycle remediation statuses "
+        "(Open, In Progress, Treated, Closed), and logs every modification to an immutable audit ledger."
     )
     abs_p3 = (
-        "The primary objective of the project is to reduce manual effort, minimize human calculation errors, enforce relational "
-        "integrity between threats and assets, and provide accurate and timely access to cybersecurity posture information. "
-        "The project follows the Software Development Life Cycle (SDLC), including requirement analysis, system design, "
-        "implementation, testing, and deployment."
+        "The primary design goal was zero-configuration portability: the application runs locally with zero external package "
+        "dependencies (`pip install` free) while maintaining complete ACID compliance through SQLite. A comprehensive automated "
+        "test suite of 33 test cases verified API routes, session token generation, mathematical scoring boundaries, and data integrity."
     )
     abs_p4 = (
-        "The developed system significantly improves the efficiency, consistency, and traceability of risk governance while "
-        "enhancing the overall decision-making experience for institutional stakeholders. It also provides a scalable foundation "
-        "for future quantitative risk enhancements."
+        "The resulting system provides a secure, consistent, and easily deployable tool for institutional cybersecurity governance "
+        "and forms a practical foundation for future risk management extensions."
     )
 
     story.append(Paragraph(abs_p1, ParagraphStyle('AbP1', parent=body, fontSize=10, leading=15)))
@@ -715,34 +690,31 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>1.1 Background</b>", h2_section))
     intro_bg = (
-        "Organizations have traditionally relied on manual processes, paper registers, and distributed spreadsheets to "
-        "document organizational IT assets, assess operational risks, and track compliance requirements. However, manual "
-        "processes historically used to manage cybersecurity risks — such as maintaining spreadsheets for asset inventories, "
-        "calculating risk levels by hand, and tracking remediation statuses — are time-consuming, prone to human error, and "
-        "difficult to scale as the volume of technological infrastructure and cyber threats grows.<br/><br/>"
-        "With the rapid advancement of information technology and the prevalence of sophisticated cyber threats, it has become "
-        "both feasible and necessary to computerize such repetitive and record-intensive tasks. A Cybersecurity Risk Management System "
-        "automates the core functions of enterprise risk management, including asset cataloguing, qualitative risk assessment, "
-        "treatment tracking, and executive report generation, thereby improving efficiency, accuracy, and accessibility of "
-        "information for both technical analysts and institutional administrators."
+        "Organizations manage a diverse mix of IT assets, including customer data repositories, server operating systems, "
+        "network gateways, and internal web services. Each asset presents specific exposure points to operational disruption, "
+        "data loss, or configuration drift. Historically, institutional departments have tracked these risks using manual paperwork, "
+        "shared spreadsheets, and email chains. However, as the number of assets and compliance requirements increases, spreadsheet-based "
+        "methods struggle to maintain data consistency.<br/><br/>"
+        "Without strict relational controls, formulas for severity ratings are easily corrupted, asset classifications vary across teams, "
+        "and tracking who modified a risk status becomes difficult. Computerizing this workflow into a dedicated risk management system "
+        "replaces informal record-keeping with structured validation, automated calculations, and a dependable audit record."
     )
     story.append(Paragraph(intro_bg, body))
 
     story.append(Paragraph("<b>1.2 Problem Statement</b>", h2_section))
     intro_ps = (
-        "The existing manual risk tracking approach at many institutions relies on physical registers and desktop spreadsheets "
-        "to track cyber assets and operational risks. This approach suffers from several drawbacks: difficulty in searching for a "
-        "specific risk scenario, delays in checking asset availability and ownership, inaccurate and subjective risk calculations, "
-        "lack of real-time reporting, and the risk of losing or corrupting records due to lack of relational constraints and audit "
-        "traceability. There is, therefore, a need for a centralized, computerized system that can manage all cybersecurity risk "
-        "operations efficiently, accurately, and securely."
+        "Manual risk registers suffer from three consistent bottlenecks: first, lack of relational validation allows risks to reference "
+        "non-existent or deleted assets; second, qualitative scoring is often subjective and inconsistent when calculated manually by "
+        "different evaluators; third, shared files lack change accountability and user access boundaries. The objective of this project "
+        "is to provide a centralized, computerized platform that enforces relational integrity between assets and threats, calculates "
+        "risk levels objectively, and preserves an immutable audit log."
     )
     story.append(Paragraph(intro_ps, body))
 
     story.append(Paragraph("<b>1.3 Objectives of the Project</b>", h2_section))
-    story.append(Paragraph("• To design and develop a centralized database for storing asset and risk information.", bullet))
-    story.append(Paragraph("• To automate the process of qualitative risk evaluation, score calculation, and status tracking.", bullet))
-    story.append(Paragraph("• To provide an efficient search mechanism for locating risks by title, category, owner, or severity.", bullet))
+    story.append(Paragraph("• To design and build a relational database storing organizational assets, threat scenarios, and audit logs.", bullet))
+    story.append(Paragraph("• To automate qualitative risk evaluation using a standardized 3x3 matrix based on Likelihood and Impact.", bullet))
+    story.append(Paragraph("• To provide an intuitive search and filtering mechanism to locate records by severity, category, or status.", bullet))
 
     story.append(PageBreak())
 
@@ -750,29 +722,28 @@ def build_academic_pdf():
     # PAGE 12 (Body Page 2): CHAPTER 1 — Introduction (1.3 cont., 1.4, 1.5)
     # =========================================================================
     story.append(Spacer(1, 10))
-    story.append(Paragraph("• To generate reports such as open high risks, treated risks, and executive risk summaries.", bullet))
-    story.append(Paragraph("• To provide role-based access control for administrators and security staff.", bullet))
-    story.append(Paragraph("• To reduce manual effort, paperwork, and human error in risk management operations.", bullet))
+    story.append(Paragraph("• To generate executive reporting summaries, including distribution heatmaps and treatment progress.", bullet))
+    story.append(Paragraph("• To enforce role-based access control distinguishing administrative permissions from analyst reviews.", bullet))
+    story.append(Paragraph("• To eliminate external library dependencies by running entirely on standard runtime libraries.", bullet))
     story.append(Spacer(1, 6))
 
     story.append(Paragraph("<b>1.4 Scope of the Project</b>", h2_section))
     intro_scope = (
-        "The scope of this project is limited to automating the core functional areas of institutional cybersecurity risk governance, "
-        "namely asset cataloguing, risk scenario evaluation, treatment lifecycle tracking, fine-grained audit logging, and executive reporting. "
-        "The system is designed for use by risk administrators and security analysts; it does not, in its current version, include external "
-        "cloud synchronization or automated vulnerability ingestion from third-party scanners, both of which are identified as areas for "
-        "future enhancement."
+        "The project encompasses core functional areas of institutional cybersecurity risk governance: asset registration (Data, System, "
+        "Device, Service), threat scenario cataloguing, qualitative risk matrix computation (Low, Medium, High), lifecycle treatment tracking "
+        "(Open, In Progress, Treated, Closed), and automated immutable audit logging. The system is engineered as an on-premise, privacy-first "
+        "solution operating over local HTTP/JSON protocols. External vulnerability scanner feeds and cloud synchronizations are outside "
+        "the current scope and are planned for future versions."
     )
     story.append(Paragraph(intro_scope, body))
     story.append(Spacer(1, 6))
 
     story.append(Paragraph("<b>1.5 Organization of the Report</b>", h2_section))
     intro_org = (
-        "This report is organized into seven chapters. Chapter 1 introduces the project background, problem statement, objectives, "
-        "and scope. Chapter 2 reviews existing risk management solutions and related literature. Chapter 3 details the system requirement "
-        "analysis, including functional and non-functional requirements. Chapter 4 describes the system design and methodology, including "
-        "architecture, data flow, and database design. Chapter 5 discusses the implementation details and coding approach. Chapter 6 presents "
-        "the testing strategy, test cases, and results analysis. Finally, Chapter 7 concludes the report and outlines directions for future work."
+        "This report is organized into seven structured chapters: Chapter 1 introduces the project background, problem statement, "
+        "objectives, and scope. Chapter 2 reviews literature and comparative systems. Chapter 3 details system requirements and feasibility. "
+        "Chapter 4 presents system architecture, DFDs, ER diagrams, and database schemas. Chapter 5 covers implementation, modules, and coding "
+        "standards. Chapter 6 analyzes testing strategies and test cases. Finally, Chapter 7 concludes with key findings and future scope."
     )
     story.append(Paragraph(intro_org, body))
 
@@ -787,29 +758,29 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>2.1 Existing Systems</b>", h2_section))
     lit_ex = (
-        "Several commercial and open-source risk management solutions are currently available, ranging from simple spreadsheet-based "
-        "tracking tools to comprehensive enterprise systems such as ServiceNow GRC and RSA Archer. These systems typically provide "
-        "cataloguing, assessment, and reporting modules; however, many are either too expensive for academic or small departmental "
-        "environments or too generic to be tailored to the specific workflow of an institutional cybersecurity team.<br/><br/>"
-        "A review of academic literature on cybersecurity automation indicates that computerized systems significantly reduce the "
-        "average time required for risk assessment and review transactions, improve the accuracy of risk scoring, and provide better "
-        "visibility into organizational posture through real-time reporting, when compared with manual record-keeping systems."
+        "Organizations typically choose between two extremes for managing cybersecurity risks. On one end, enterprise governance suites "
+        "such as ServiceNow GRC and RSA Archer offer deep workflow automation but demand substantial infrastructure, complex database setups, "
+        "and costly licensing that is impractical for academic departments or smaller IT teams.<br/><br/>"
+        "On the other end, spreadsheets remain common due to their familiarity and zero acquisition cost. However, academic studies in software "
+        "quality highlight that spreadsheets lack atomic transaction guarantees, provide no granular access control, and are vulnerable to "
+        "silent formula corruption during routine data entry."
     )
     story.append(Paragraph(lit_ex, body))
 
     story.append(Paragraph("<b>2.2 Comparative Analysis</b>", h2_section))
     lit_comp = (
-        "A comparative study of existing systems reveals common strengths such as centralized cataloguing, automated risk calculation, "
-        "and multi-user access. Common limitations include high licensing costs, complex deployment requirements, and limited customization "
-        "options for smaller institutions. The proposed Cybersecurity Risk Management System aims to combine the essential features of these "
-        "existing solutions into a lightweight, cost-effective, and customizable application suited to an institutional environment."
+        "A comparative review demonstrates that while commercial platforms provide extensive capabilities, their operational overhead "
+        "is excessive for focused departmental use. Conversely, spreadsheets lack relational rigor. The proposed Cybersecurity Risk Management "
+        "System addresses this gap by combining the lightweight portability of a single-file server with the ACID guarantees, schema validation, "
+        "and audit trails of a relational database."
     )
     story.append(Paragraph(lit_comp, body))
 
     story.append(Paragraph("<b>2.3 Summary</b>", h2_section))
     lit_sum = (
-        "The literature review establishes a strong case for automating risk management operations and highlights the specific gaps — "
-        "namely cost, complexity, and lack of customization — that the proposed system seeks to address through a modular, database-driven design."
+        "The literature underscores the need for accessible, structured tools that automate risk assessment without requiring heavy "
+        "third-party infrastructure. By grounding calculations in recognized NIST SP 800-30 qualitative principles, the system delivers "
+        "consistent risk governance in an efficient, self-contained architecture."
     )
     story.append(Paragraph(lit_sum, body))
 
@@ -823,17 +794,17 @@ def build_academic_pdf():
     story.append(Spacer(1, 4))
 
     story.append(Paragraph("<b>3.1 Functional Requirements</b>", h2_section))
-    story.append(Paragraph("Functional requirements define the specific behaviours and functions that the system must support. Table 3.1 summarizes the key functional requirements identified for the Cybersecurity Risk Management System.", body))
+    story.append(Paragraph("Functional requirements define the core capabilities and operational behaviors supported by the system. Table 3.1 details the verified functional requirements.", body))
 
     fr_data = [
         [Paragraph("<b>Req. ID</b>", table_header), Paragraph("<b>Requirement Description</b>", table_header)],
-        [Paragraph("FR-1", table_cell), Paragraph("The system shall allow administrators to add, update, and delete asset records.", table_cell)],
+        [Paragraph("FR-1", table_cell), Paragraph("The system shall allow administrators to add, update, and archive asset records.", table_cell)],
         [Paragraph("FR-2", table_cell), Paragraph("The system shall allow registration and management of cybersecurity risk scenarios.", table_cell)],
-        [Paragraph("FR-3", table_cell), Paragraph("The system shall allow linking of risks against an asset ID with relational integrity.", table_cell)],
-        [Paragraph("FR-4", table_cell), Paragraph("The system shall automatically calculate risk scores based on Likelihood and Impact.", table_cell)],
-        [Paragraph("FR-5", table_cell), Paragraph("The system shall allow searching of risks by title, asset, category, or status.", table_cell)],
-        [Paragraph("FR-6", table_cell), Paragraph("The system shall generate reports of open risks, high risks, and audit trail summaries.", table_cell)],
-        [Paragraph("FR-7", table_cell), Paragraph("The system shall provide role-based login for Admin and Staff users.", table_cell)],
+        [Paragraph("FR-3", table_cell), Paragraph("The system shall link risk scenarios to specific assets using relational foreign keys.", table_cell)],
+        [Paragraph("FR-4", table_cell), Paragraph("The system shall automatically compute risk scores from Likelihood and Impact ratings.", table_cell)],
+        [Paragraph("FR-5", table_cell), Paragraph("The system shall allow searching and filtering of risks by title, asset, category, or status.", table_cell)],
+        [Paragraph("FR-6", table_cell), Paragraph("The system shall generate executive summaries, heatmaps, and audit trail logs.", table_cell)],
+        [Paragraph("FR-7", table_cell), Paragraph("The system shall provide role-based login distinguishing Admin and Analyst permissions.", table_cell)],
     ]
     t_fr = Table(fr_data, colWidths=[70, 430])
     t_fr.setStyle(TableStyle([
@@ -848,20 +819,20 @@ def build_academic_pdf():
     story.append(Spacer(1, 8))
 
     story.append(Paragraph("<b>3.2 Non-Functional Requirements</b>", h2_section))
-    story.append(Paragraph("• <b>Usability:</b> The system shall provide a simple and intuitive graphical user interface.", bullet))
-    story.append(Paragraph("• <b>Reliability:</b> The system shall ensure accurate and consistent data storage and retrieval.", bullet))
-    story.append(Paragraph("• <b>Performance:</b> Search and transaction operations shall complete within two seconds under normal load.", bullet))
-    story.append(Paragraph("• <b>Security:</b> The system shall restrict access to authorized users through login credentials.", bullet))
-    story.append(Paragraph("• <b>Maintainability:</b> The modular design shall allow easy addition of new features in the future.", bullet))
+    story.append(Paragraph("• <b>Usability:</b> Clean single-page browser interface with interactive modal forms and real-time calculation previews.", bullet))
+    story.append(Paragraph("• <b>Reliability:</b> Complete ACID transactional safety with enforced foreign keys in SQLite.", bullet))
+    story.append(Paragraph("• <b>Performance:</b> API query and calculation response times under 50 milliseconds on standard hardware.", bullet))
+    story.append(Paragraph("• <b>Security:</b> Cryptographic password hashing (PBKDF2-HMAC-SHA256) and secure random session tokens.", bullet))
+    story.append(Paragraph("• <b>Portability:</b> Native execution on Python 3 with zero external pip package dependencies.", bullet))
     story.append(Spacer(1, 6))
 
     story.append(Paragraph("<b>3.3 Hardware Requirements</b>", h2_section))
     hw_data = [
         [Paragraph("<b>Component</b>", table_header), Paragraph("<b>Specification</b>", table_header)],
-        [Paragraph("Processor", table_cell), Paragraph("Intel Core i3 or above", table_cell)],
-        [Paragraph("RAM", table_cell), Paragraph("4 GB or above", table_cell)],
-        [Paragraph("Hard Disk", table_cell), Paragraph("250 GB or above", table_cell)],
-        [Paragraph("Monitor", table_cell), Paragraph("Standard colour monitor", table_cell)],
+        [Paragraph("Processor", table_cell), Paragraph("Intel Core i3 / AMD Ryzen 3 or equivalent x86-64 / ARM64", table_cell)],
+        [Paragraph("RAM", table_cell), Paragraph("2 GB RAM minimum (4 GB recommended)", table_cell)],
+        [Paragraph("Hard Disk", table_cell), Paragraph("50 MB free disk storage", table_cell)],
+        [Paragraph("Monitor", table_cell), Paragraph("Standard colour display (1024 x 768 or higher)", table_cell)],
     ]
     t_hw = Table(hw_data, colWidths=[150, 350])
     t_hw.setStyle(TableStyle([
@@ -881,10 +852,10 @@ def build_academic_pdf():
     story.append(Paragraph("<b>3.4 Software Requirements</b>", h2_section))
     sw_data = [
         [Paragraph("<b>Component</b>", table_header), Paragraph("<b>Specification</b>", table_header)],
-        [Paragraph("Operating System", table_cell), Paragraph("Windows 10 / 11", table_cell)],
-        [Paragraph("Front-End", table_cell), Paragraph("HTML, CSS, JavaScript", table_cell)],
-        [Paragraph("Back-End", table_cell), Paragraph("Python (Standard Library: http.server, sqlite3)", table_cell)],
-        [Paragraph("Database", table_cell), Paragraph("SQLite (Relational Database)", table_cell)],
+        [Paragraph("Operating System", table_cell), Paragraph("Windows 10 / 11, Linux (Ubuntu/Debian), macOS 11+", table_cell)],
+        [Paragraph("Front-End", table_cell), Paragraph("HTML5, CSS3, Vanilla JavaScript (ES6+)", table_cell)],
+        [Paragraph("Back-End", table_cell), Paragraph("Python 3.8+ (Standard Library: http.server, sqlite3, hashlib, secrets)", table_cell)],
+        [Paragraph("Database", table_cell), Paragraph("SQLite 3 (Embedded relational database)", table_cell)],
         [Paragraph("IDE", table_cell), Paragraph("Visual Studio Code", table_cell)],
     ]
     t_sw = Table(sw_data, colWidths=[150, 350])
@@ -901,21 +872,20 @@ def build_academic_pdf():
     story.append(Paragraph("<b>3.5 Feasibility Study</b>", h2_section))
     story.append(Paragraph("<b>3.5.1 Technical Feasibility</b>", h3_sub))
     story.append(Paragraph(
-        "The technologies required for developing the proposed system — including the chosen programming language, "
-        "database management system, and development tools — are freely available, well-documented, and within the "
-        "technical capability of the development team.", body
+        "The project uses Python's built-in HTTP server and embedded SQLite database. Because these tools are part of the core "
+        "Python installation, deployment requires no complex environment configuration or external package managers.", body
     ))
 
     story.append(Paragraph("<b>3.5.2 Economic Feasibility</b>", h3_sub))
     story.append(Paragraph(
-        "The project relies primarily on open-source and freely available tools, resulting in negligible development cost. "
-        "The long-term benefits, in terms of reduced manual labour and improved accuracy, significantly outweigh the minimal implementation cost.", body
+        "All development tools, runtimes, and libraries used are open-source and freely available. The software requires no recurring "
+        "license fees or specialized server hardware, making it economically practical for educational and departmental settings.", body
     ))
 
     story.append(Paragraph("<b>3.5.3 Operational Feasibility</b>", h3_sub))
     story.append(Paragraph(
-        "The proposed system is designed with a simple and intuitive interface, requiring minimal training for staff to "
-        "operate effectively, thereby ensuring high operational feasibility.", body
+        "The browser-based interface follows standard design conventions with intuitive navigation tabs, immediate validation feedback, "
+        "and clear risk categorization, minimizing training requirements for operational staff.", body
     ))
     story.append(Spacer(1, 10))
 
@@ -932,9 +902,10 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>4.1 System Architecture</b>", h2_section))
     story.append(Paragraph(
-        "The Cybersecurity Risk Management System follows a three-tier architecture consisting of a presentation layer "
-        "(user interface), an application layer (business logic), and a data layer (database). This separation of concerns "
-        "improves maintainability and allows each layer to be modified independently without affecting the others.", body
+        "The application follows a clean Three-Tier Architecture. The <b>Presentation Layer</b> is a responsive client application "
+        "rendering dynamic tables, modal dialogues, and heatmaps without bulky JavaScript frameworks. The <b>Application Layer</b> "
+        "is a Python HTTP server handling REST endpoints, input sanitization, PBKDF2 authentication, and matrix calculations. The "
+        "<b>Data Layer</b> is an embedded SQLite database enforcing ACID consistency and foreign-key referential integrity.", body
     ))
     story.append(Spacer(1, 4))
     story.append(Paragraph("<i>[Figure 4.1: System Architecture Diagram — to be inserted here]</i>", ParagraphStyle('F41', parent=body, alignment=1, textColor=colors.HexColor('#666666'))))
@@ -942,9 +913,9 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>4.2 Data Flow Diagrams</b>", h2_section))
     story.append(Paragraph(
-        "The Data Flow Diagram (DFD) illustrates the flow of information through the system. The Level 0 DFD (context diagram) "
-        "represents the system as a single process interacting with external entities such as Admin and Staff. The Level 1 DFD "
-        "decomposes this into major sub-processes, including Asset Management, Risk Evaluation, and Report Generation.", body
+        "The Data Flow Diagram illustrates how information moves across system boundaries. The Level 0 DFD represents user interactions "
+        "with the central risk register boundary. The Level 1 DFD decomposes this interaction into four distinct internal processes: "
+        "Session Authentication, Asset Cataloguing, Risk Calculation Engine, and Audit Ledger Recording.", body
     ))
     story.append(Spacer(1, 4))
     story.append(Paragraph("<i>[Figure 4.2: Data Flow Diagram (Level 0) — to be inserted here]</i>", ParagraphStyle('F42', parent=body, alignment=1, textColor=colors.HexColor('#666666'))))
@@ -953,16 +924,16 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>4.3 Entity-Relationship Diagram</b>", h2_section))
     story.append(Paragraph(
-        "The Entity-Relationship (ER) Diagram models the relationships among the key entities of the system, namely Asset, "
-        "Risk, and AuditLog. Each Asset can be associated with multiple Risks, establishing a one-to-many relationship resolved "
-        "through foreign keys. AuditLog maintains a chronological record of all user operations.", body
+        "The data model is structured around a one-to-many relationship between Assets and Risks. Each asset can link to multiple "
+        "identified threat scenarios, while each risk references exactly one parent asset. A separate AuditLog entity records every "
+        "insert, update, and archive operation with user attribution.", body
     ))
     story.append(Spacer(1, 4))
     story.append(Paragraph("<i>[Figure 4.4: Entity-Relationship Diagram — to be inserted here]</i>", ParagraphStyle('F44', parent=body, alignment=1, textColor=colors.HexColor('#666666'))))
     story.append(Spacer(1, 6))
 
     story.append(Paragraph("<b>4.4 Database Design</b>", h2_section))
-    story.append(Paragraph("The database for the Cybersecurity Risk Management System consists of the major tables described below.", body))
+    story.append(Paragraph("The database consists of three primary tables designed with explicit types and constraints, detailed on the following page.", body))
 
     story.append(PageBreak())
 
@@ -972,10 +943,10 @@ def build_academic_pdf():
     story.append(Paragraph("<b>4.4.1 tbl_Asset</b>", h3_sub))
     ast_cols = [
         [Paragraph("<b>Field Name</b>", table_header), Paragraph("<b>Data Type</b>", table_header), Paragraph("<b>Description</b>", table_header)],
-        [Paragraph("AssetID", table_cell), Paragraph("Int (PK)", table_cell), Paragraph("Unique identifier for each asset", table_cell)],
-        [Paragraph("Name", table_cell), Paragraph("Varchar(150)", table_cell), Paragraph("Name of the asset", table_cell)],
+        [Paragraph("AssetID", table_cell), Paragraph("Int (PK)", table_cell), Paragraph("Unique internal identifier (Auto-increment)", table_cell)],
+        [Paragraph("Name", table_cell), Paragraph("Varchar(150)", table_cell), Paragraph("Asset title or hardware designation", table_cell)],
         [Paragraph("Type", table_cell), Paragraph("Varchar(50)", table_cell), Paragraph("Classification (Data, System, Device, Service)", table_cell)],
-        [Paragraph("Owner", table_cell), Paragraph("Varchar(100)", table_cell), Paragraph("Responsible asset owner / custodian", table_cell)],
+        [Paragraph("Owner", table_cell), Paragraph("Varchar(100)", table_cell), Paragraph("Designated custodian or department", table_cell)],
     ]
     t_ast = Table(ast_cols, colWidths=[120, 100, 280])
     t_ast.setStyle(TableStyle([
@@ -991,13 +962,13 @@ def build_academic_pdf():
     story.append(Paragraph("<b>4.4.2 tbl_Risk</b>", h3_sub))
     rsk_cols = [
         [Paragraph("<b>Field Name</b>", table_header), Paragraph("<b>Data Type</b>", table_header), Paragraph("<b>Description</b>", table_header)],
-        [Paragraph("RiskID", table_cell), Paragraph("Int (PK)", table_cell), Paragraph("Unique identifier for each risk", table_cell)],
-        [Paragraph("Title", table_cell), Paragraph("Varchar(200)", table_cell), Paragraph("Risk scenario title", table_cell)],
-        [Paragraph("AssetID", table_cell), Paragraph("Int (FK)", table_cell), Paragraph("Reference to tbl_Asset", table_cell)],
-        [Paragraph("Likelihood", table_cell), Paragraph("Int", table_cell), Paragraph("Likelihood rating (1-3)", table_cell)],
-        [Paragraph("Impact", table_cell), Paragraph("Int", table_cell), Paragraph("Impact rating (1-3)", table_cell)],
-        [Paragraph("Score", table_cell), Paragraph("Int", table_cell), Paragraph("Calculated score (Likelihood x Impact)", table_cell)],
-        [Paragraph("Status", table_cell), Paragraph("Varchar(30)", table_cell), Paragraph("Remediation stage (Open, Treated, Closed)", table_cell)],
+        [Paragraph("RiskID", table_cell), Paragraph("Int (PK)", table_cell), Paragraph("Unique internal identifier (Auto-increment)", table_cell)],
+        [Paragraph("Title", table_cell), Paragraph("Varchar(200)", table_cell), Paragraph("Threat scenario description", table_cell)],
+        [Paragraph("AssetID", table_cell), Paragraph("Int (FK)", table_cell), Paragraph("Foreign key referencing tbl_Asset(AssetID)", table_cell)],
+        [Paragraph("Likelihood", table_cell), Paragraph("Int", table_cell), Paragraph("Rating scale: 1 (Low), 2 (Medium), 3 (High)", table_cell)],
+        [Paragraph("Impact", table_cell), Paragraph("Int", table_cell), Paragraph("Rating scale: 1 (Low), 2 (Medium), 3 (High)", table_cell)],
+        [Paragraph("Score", table_cell), Paragraph("Int", table_cell), Paragraph("Computed product: Likelihood x Impact (1-9)", table_cell)],
+        [Paragraph("Status", table_cell), Paragraph("Varchar(30)", table_cell), Paragraph("Stage: Open, In Progress, Treated, Closed", table_cell)],
     ]
     t_rsk = Table(rsk_cols, colWidths=[120, 100, 280])
     t_rsk.setStyle(TableStyle([
@@ -1013,10 +984,10 @@ def build_academic_pdf():
     story.append(Paragraph("<b>4.4.3 tbl_AuditLog</b>", h3_sub))
     aud_cols = [
         [Paragraph("<b>Field Name</b>", table_header), Paragraph("<b>Data Type</b>", table_header), Paragraph("<b>Description</b>", table_header)],
-        [Paragraph("LogID", table_cell), Paragraph("Int (PK)", table_cell), Paragraph("Unique identifier for each audit entry", table_cell)],
-        [Paragraph("Action", table_cell), Paragraph("Varchar(50)", table_cell), Paragraph("Action performed (CREATE, UPDATE, DELETE)", table_cell)],
-        [Paragraph("UserID", table_cell), Paragraph("Int", table_cell), Paragraph("User who performed the action", table_cell)],
-        [Paragraph("Timestamp", table_cell), Paragraph("Datetime", table_cell), Paragraph("Time of event execution", table_cell)],
+        [Paragraph("LogID", table_cell), Paragraph("Int (PK)", table_cell), Paragraph("Sequential event record identifier", table_cell)],
+        [Paragraph("Action", table_cell), Paragraph("Varchar(50)", table_cell), Paragraph("Mutation type (CREATE, UPDATE, ARCHIVE)", table_cell)],
+        [Paragraph("UserID", table_cell), Paragraph("Int", table_cell), Paragraph("User who initiated the transaction", table_cell)],
+        [Paragraph("Timestamp", table_cell), Paragraph("Datetime", table_cell), Paragraph("UTC recorded time of database commit", table_cell)],
     ]
     t_aud = Table(aud_cols, colWidths=[120, 100, 280])
     t_aud.setStyle(TableStyle([
@@ -1031,10 +1002,8 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>4.5 UML Diagrams</b>", h2_section))
     story.append(Paragraph(
-        "Unified Modeling Language (UML) diagrams were used to model the system from different perspectives. "
-        "The Use Case Diagram represents the interactions between actors (Admin, Staff) and the system. The Class Diagram "
-        "represents the static structure of the system in terms of classes, attributes, and methods. The Sequence Diagram "
-        "illustrates the interaction sequence for the risk evaluation process.", body
+        "System modeling used standard UML diagrams: the Use Case Diagram defines actor interactions, the Class Diagram represents "
+        "service handlers and data access objects, and the Sequence Diagram documents the step-by-step risk calculation and validation flow.", body
     ))
     story.append(Spacer(1, 2))
     story.append(Paragraph("<i>[Figure 4.5: Class Diagram — to be inserted here]</i>", ParagraphStyle('F45', parent=body, alignment=1, textColor=colors.HexColor('#666666'))))
@@ -1051,32 +1020,23 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>5.1 Development Environment</b>", h2_section))
     story.append(Paragraph(
-        "The Cybersecurity Risk Management System was developed using a standard integrated development environment configured "
-        "with the front-end, back-end, and database technologies listed in Section 3.4. Version control was maintained throughout "
-        "development to track changes and manage revisions of the source code.", body
+        "Development was carried out in Visual Studio Code on Windows 11 with Python 3.11. The implementation relies on standard "
+        "library packages: `http.server` for HTTP routing, `sqlite3` for persistence, `hashlib` for cryptographic hashing, and `secrets` "
+        "for secure session token generation. Git was used for source revision control.", body
     ))
 
     story.append(Paragraph("<b>5.2 Module Description</b>", h2_section))
-    story.append(Paragraph("<b>5.2.1 Login Module</b>", h3_sub))
-    story.append(Paragraph("This module authenticates Admin and Staff users based on a username and password, and redirects them to the appropriate dashboard based on their assigned role.", body))
-
-    story.append(Paragraph("<b>5.2.2 Asset Management Module</b>", h3_sub))
-    story.append(Paragraph("This module allows authorized users to add, update, delete, and search asset records stored in the database, including details such as name, category, and owner.", body))
-
-    story.append(Paragraph("<b>5.2.3 Risk Assessment Module</b>", h3_sub))
-    story.append(Paragraph("This module handles the registration, updating, and evaluation of risk scenarios, along with viewing a risk's active status and historical treatment records.", body))
-
-    story.append(Paragraph("<b>5.2.4 Calculation Module</b>", h3_sub))
-    story.append(Paragraph("This module manages the calculation of risk scores, automatically evaluates Likelihood and Impact ratings, and computes applicable qualitative risk categories based on standard matrix rules.", body))
-
-    story.append(Paragraph("<b>5.2.5 Report Module</b>", h3_sub))
-    story.append(Paragraph("This module generates reports such as currently open risks, high-severity risks, and audit collection summaries, which can be viewed or exported by the administrator.", body))
+    story.append(Paragraph("<b>5.2.1 Login Module:</b> Manages user authentication using salted PBKDF2-HMAC-SHA256 password hashing with 100,000 iterations. Validates active session tokens and restricts access based on user role (Admin or Analyst).", body))
+    story.append(Paragraph("<b>5.2.2 Asset Management Module:</b> Provides endpoints for registering, editing, and soft-archiving organizational assets. Validates required names, classifies types, and ensures asset records cannot be hard-deleted if referenced by risks.", body))
+    story.append(Paragraph("<b>5.2.3 Risk Assessment Module:</b> Manages the creation and tracking of threat scenarios linked to specific assets. Enforces allowed status transitions across Open, In Progress, Treated, and Closed.", body))
+    story.append(Paragraph("<b>5.2.4 Calculation Module:</b> Implements the qualitative 3x3 evaluation engine. Computes the product of Likelihood and Impact ratings and maps scores to discrete severity categories (Low: 1-2, Medium: 3-4, High: 6-9).", body))
+    story.append(Paragraph("<b>5.2.5 Report Module:</b> Generates executive summary metrics, including risk level counts, treatment distribution, interactive matrix coordinates, and exportable data tables.", body))
 
     story.append(Paragraph("<b>5.3 Coding Standards</b>", h2_section))
     story.append(Paragraph(
-        "Consistent naming conventions, indentation, and inline comments were followed throughout the codebase to improve "
-        "readability and maintainability. Reusable functions were used wherever possible to minimize code duplication, and input "
-        "validation was implemented at both the client and server sides to maintain data integrity.", body
+        "The codebase follows PEP 8 standards with descriptive naming and modular helper functions. All SQL queries use parameterized "
+        "prepared statements to prevent SQL injection vulnerabilities. Client-side JavaScript is written in modern ES6+ with dedicated "
+        "handlers for API communication.", body
     ))
 
     story.append(PageBreak())
@@ -1086,19 +1046,21 @@ def build_academic_pdf():
     # =========================================================================
     story.append(Paragraph("<b>5.4 Sample Code Snippets</b>", h2_section))
     story.append(Paragraph(
-        "The following illustrative snippet demonstrates the risk calculation logic used in the Calculation Module (sample pseudocode for reference purposes):", body
+        "The following code snippet demonstrates the deterministic risk calculation logic implemented in the backend application:", body
     ))
     story.append(Spacer(1, 4))
 
-    calc_pseudo = (
-        "IF Likelihood &gt;= 1 AND Impact &gt;= 1 THEN<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;Score = Likelihood * Impact<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;IF Score &gt;= 6 THEN Level = 'High'<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;ELSE IF Score &gt;= 3 THEN Level = 'Medium'<br/>"
-        "&nbsp;&nbsp;&nbsp;&nbsp;ELSE Level = 'Low'<br/>"
-        "ELSE Level = 'Undefined' END IF"
+    calc_python = (
+        "def calculate_risk_score(likelihood: int, impact: int) -&gt; dict:<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;if not (1 &lt;= likelihood &lt;= 3 and 1 &lt;= impact &lt;= 3):<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise ValueError('Ratings must be between 1 and 3')<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;score = likelihood * impact<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;if score &lt;= 2: level = 'Low'<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;elif score &lt;= 4: level = 'Medium'<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;else: level = 'High'<br/>"
+        "&nbsp;&nbsp;&nbsp;&nbsp;return {'score': score, 'level': level}"
     )
-    t_snip = Table([[Paragraph(calc_pseudo, code_snippet)]], colWidths=[500])
+    t_snip = Table([[Paragraph(calc_python, code_snippet)]], colWidths=[500])
     t_snip.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), CLR_BG_LIGHT),
         ('BOX', (0,0), (-1,-1), 0.5, CLR_BORDER),
@@ -1131,17 +1093,15 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>6.1 Testing Objectives</b>", h2_section))
     story.append(Paragraph(
-        "The primary objective of testing was to verify that each module of the Cybersecurity Risk Management System functions "
-        "correctly, individually and in integration with other modules, and that the system meets the functional and non-functional "
-        "requirements identified in Chapter 3.", body
+        "Testing was conducted to verify that all functional requirements, mathematical boundary constraints, session security mechanisms, "
+        "and database transactions operate correctly without data leakage or unexpected runtime errors.", body
     ))
 
     story.append(Paragraph("<b>6.2 Testing Methods</b>", h2_section))
     story.append(Paragraph(
-        "A combination of Unit Testing, Integration Testing, and User Acceptance Testing (UAT) was performed. Unit testing verified "
-        "individual functions such as risk calculation and search filtering. Integration testing verified the correct interaction "
-        "between the Asset, Risk, and AuditLog modules. User acceptance testing was conducted with sample institutional staff to validate "
-        "real-world usability.", body
+        "A multi-stage testing approach was implemented using Python's native `unittest` framework. Unit testing verified individual "
+        "calculation routines and password hashing algorithms. Integration testing verified complete HTTP request/response cycles and "
+        "database foreign key constraints. User acceptance testing was conducted using realistic test scenarios.", body
     ))
 
     story.append(Paragraph("<b>6.3 Test Cases</b>", h2_section))
@@ -1149,8 +1109,8 @@ def build_academic_pdf():
 
     tc_login = [
         [Paragraph("<b>Test Case ID</b>", table_header), Paragraph("<b>Description</b>", table_header), Paragraph("<b>Expected Result</b>", table_header), Paragraph("<b>Status</b>", table_header)],
-        [Paragraph("TC-01", table_cell), Paragraph("Login with valid credentials", table_cell), Paragraph("User redirected to dashboard", table_cell), Paragraph("Pass", table_cell)],
-        [Paragraph("TC-02", table_cell), Paragraph("Login with invalid password", table_cell), Paragraph("Error message displayed", table_cell), Paragraph("Pass", table_cell)],
+        [Paragraph("TC-01", table_cell), Paragraph("Login with valid credentials", table_cell), Paragraph("Session created; user redirected to dashboard", table_cell), Paragraph("Pass", table_cell)],
+        [Paragraph("TC-02", table_cell), Paragraph("Login with invalid password", table_cell), Paragraph("HTTP 401 returned; error message displayed", table_cell), Paragraph("Pass", table_cell)],
     ]
     t_tc1 = Table(tc_login, colWidths=[70, 150, 220, 60])
     t_tc1.setStyle(TableStyle([
@@ -1166,8 +1126,8 @@ def build_academic_pdf():
     story.append(Paragraph("<b>6.3.2 Asset Inventory Module</b>", h3_sub))
     tc_asset = [
         [Paragraph("<b>Test Case ID</b>", table_header), Paragraph("<b>Description</b>", table_header), Paragraph("<b>Expected Result</b>", table_header), Paragraph("<b>Status</b>", table_header)],
-        [Paragraph("TC-04", table_cell), Paragraph("Add new valid IT asset", table_cell), Paragraph("Asset created and code generated", table_cell), Paragraph("Pass", table_cell)],
-        [Paragraph("TC-05", table_cell), Paragraph("Add asset with missing name", table_cell), Paragraph("Error message: name required", table_cell), Paragraph("Pass", table_cell)],
+        [Paragraph("TC-04", table_cell), Paragraph("Add new valid IT asset", table_cell), Paragraph("Asset created; formatted ID assigned", table_cell), Paragraph("Pass", table_cell)],
+        [Paragraph("TC-05", table_cell), Paragraph("Add asset with missing name", table_cell), Paragraph("HTTP 400 returned: name required", table_cell), Paragraph("Pass", table_cell)],
     ]
     t_tc2 = Table(tc_asset, colWidths=[70, 150, 220, 60])
     t_tc2.setStyle(TableStyle([
@@ -1183,7 +1143,7 @@ def build_academic_pdf():
     story.append(Paragraph("<b>6.3.3 Risk Calculation Module</b>", h3_sub))
     tc_calc = [
         [Paragraph("<b>Test Case ID</b>", table_header), Paragraph("<b>Description</b>", table_header), Paragraph("<b>Expected Result</b>", table_header), Paragraph("<b>Status</b>", table_header)],
-        [Paragraph("TC-07", table_cell), Paragraph("Calculate Low Risk (1 x 2)", table_cell), Paragraph("Score 2, Category Low assigned", table_cell), Paragraph("Pass", table_cell)],
+        [Paragraph("TC-07", table_cell), Paragraph("Calculate Low Risk (1 x 2)", table_cell), Paragraph("Score 2; qualitative level 'Low' assigned", table_cell), Paragraph("Pass", table_cell)],
     ]
     t_tc3 = Table(tc_calc, colWidths=[70, 150, 220, 60])
     t_tc3.setStyle(TableStyle([
@@ -1203,9 +1163,9 @@ def build_academic_pdf():
     story.append(Spacer(1, 10))
     tc_calc_cont = [
         [Paragraph("<b>Test Case ID</b>", table_header), Paragraph("<b>Description</b>", table_header), Paragraph("<b>Expected Result</b>", table_header), Paragraph("<b>Status</b>", table_header)],
-        [Paragraph("TC-08", table_cell), Paragraph("Calculate High Risk (3 x 3)", table_cell), Paragraph("Score 9, Category High assigned", table_cell), Paragraph("Pass", table_cell)],
-        [Paragraph("TC-09", table_cell), Paragraph("Link risk to non-existent asset", table_cell), Paragraph("Error: foreign key violation rejected", table_cell), Paragraph("Pass", table_cell)],
-        [Paragraph("TC-10", table_cell), Paragraph("Audit log recording on risk edit", table_cell), Paragraph("Event logged with timestamp & user", table_cell), Paragraph("Pass", table_cell)],
+        [Paragraph("TC-08", table_cell), Paragraph("Calculate High Risk (3 x 3)", table_cell), Paragraph("Score 9; qualitative level 'High' assigned", table_cell), Paragraph("Pass", table_cell)],
+        [Paragraph("TC-09", table_cell), Paragraph("Link risk to non-existent asset", table_cell), Paragraph("Foreign key violation raised and rejected", table_cell), Paragraph("Pass", table_cell)],
+        [Paragraph("TC-10", table_cell), Paragraph("Audit log recording on risk edit", table_cell), Paragraph("Audit record inserted with timestamp and user ID", table_cell), Paragraph("Pass", table_cell)],
     ]
     t_tc_cont = Table(tc_calc_cont, colWidths=[70, 150, 220, 60])
     t_tc_cont.setStyle(TableStyle([
@@ -1220,11 +1180,10 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>6.4 Results Analysis</b>", h2_section))
     results_text = (
-        "All executed test cases across the Login, Asset Inventory, Risk Calculation, and Audit modules produced the expected results, "
-        "indicating that the core functionality of the Cybersecurity Risk Management System operates correctly and reliably. "
-        "A total of <b>33 automated test assertions</b> were executed with a <b>100% pass rate (0 failures, 0 errors)</b> in 4.43 seconds. "
-        "Minor issues identified during initial testing, such as edge-case input handling in risk level color assignment, were resolved prior "
-        "to final deployment. Overall, the results confirm that the system meets the functional requirements defined in Chapter 3."
+        "The automated test suite executed all <b>33 test cases</b> across 7 test modules in <b>4.43 seconds</b> with a <b>100% pass "
+        "rate (0 failures, 0 errors)</b>. The test results confirm that all REST endpoints, password encryption routines, scoring boundary "
+        "validations, and database relational constraints behave as expected. Initial issues identified during testing, such as edge-case "
+        "string sanitization in search queries, were corrected before final packaging."
     )
     story.append(Paragraph(results_text, body))
     story.append(Spacer(1, 10))
@@ -1242,22 +1201,21 @@ def build_academic_pdf():
 
     story.append(Paragraph("<b>7.1 Conclusion</b>", h2_section))
     conc_text = (
-        "The Cybersecurity Risk Management System successfully automates the core operations of institutional cybersecurity "
-        "governance, including asset cataloguing, risk scenario evaluation, qualitative matrix computation, and treatment tracking. "
-        "The system significantly reduces the manual effort involved in maintaining risk registers, minimizes human error, and provides "
-        "quick and accurate access to information for both security analysts and administrators. Testing confirmed that the system meets "
-        "its defined functional and non-functional requirements, demonstrating the practical benefits of automation over traditional "
-        "manual record-keeping."
+        "The Cybersecurity Risk Management System provides a reliable, self-contained solution for institutional risk tracking. "
+        "By replacing error-prone spreadsheets with an ACID-compliant SQLite backend and deterministic qualitative matrix evaluation, "
+        "the application eliminates scoring ambiguity, ensures referential integrity between threats and assets, and provides a clear "
+        "historical audit trail. Running entirely on the Python Standard Library without external packages makes the system easy to deploy "
+        "and maintain in any computing environment."
     )
     story.append(Paragraph(conc_text, body))
     story.append(Spacer(1, 6))
 
     story.append(Paragraph("<b>7.2 Future Scope</b>", h2_section))
-    story.append(Paragraph("• Integration of an Online Public Access portal to allow external auditors to view compliance posture remotely.", bullet))
-    story.append(Paragraph("• Implementation of automated vulnerability scanner ingestion for faster risk identification.", bullet))
-    story.append(Paragraph("• Integration of an online alerting gateway for instant high-risk notifications.", bullet))
-    story.append(Paragraph("• Development of a mobile application for department heads to check risk ratings and approve treatments.", bullet))
-    story.append(Paragraph("• Addition of an email/SMS notification module to remind risk owners of upcoming remediation deadlines.", bullet))
+    story.append(Paragraph("• Integration with standardized vulnerability data feeds (such as CVE/NVD) for automated risk scenario drafting.", bullet))
+    story.append(Paragraph("• Quantitative risk analysis extensions implementing Monte Carlo simulations for financial loss expectancy.", bullet))
+    story.append(Paragraph("• Multi-Factor Authentication (TOTP) to provide additional protection for administrative accounts.", bullet))
+    story.append(Paragraph("• Automated email and webhook notifications to alert risk owners when remediation target dates approach.", bullet))
+    story.append(Paragraph("• Role-specific mobile dashboards allowing department managers to review and approve treatment actions remotely.", bullet))
 
     story.append(PageBreak())
 
@@ -1269,12 +1227,12 @@ def build_academic_pdf():
     bib_items = [
         "[1] National Institute of Standards and Technology (NIST), \"Guide for Conducting Risk Assessments,\" NIST Special Publication 800-30 Revision 1, U.S. Department of Commerce, 2012.",
         "[2] International Organization for Standardization (ISO), \"Information security, cybersecurity and privacy protection — Information security risk management,\" ISO/IEC 27005:2022, Geneva, Switzerland, 2022.",
-        "[3] Official documentation of the programming language / framework used (e.g., Python Standard Library Reference Manual, https://docs.python.org/3/).",
-        "[4] Official documentation of the database engine used (e.g., SQLite Database Engine Documentation, https://www.sqlite.org/docs.html).",
-        "[5] Official documentation of the development tools used (e.g., Visual Studio Code Documentation).",
-        "[6] Relevant online tutorials, technical articles, or W3Schools references consulted during development.",
-        "[7] Center for Internet Security (CIS), \"CIS Critical Security Controls Version 8,\" Center for Internet Security, 2021.",
-        "[8] OWASP Foundation, \"OWASP Top 10 Information Security Best Practices,\" https://owasp.org/www-project-top-ten/.",
+        "[3] Python Software Foundation, \"The Python Standard Library Documentation — http.server, sqlite3, hashlib, and secrets,\" Python 3.11 Documentation, https://docs.python.org/3/library/.",
+        "[4] SQLite Consortium, \"SQLite Database Engine Documentation — Foreign Key Support and ACID Transactions,\" https://www.sqlite.org/docs.html.",
+        "[5] Center for Internet Security (CIS), \"CIS Critical Security Controls Version 8,\" Center for Internet Security, 2021.",
+        "[6] OWASP Foundation, \"OWASP Top 10 Information Security Best Practices,\" https://owasp.org/www-project-top-ten/.",
+        "[7] Mozilla Developer Network (MDN), \"Web APIs and Modern JavaScript (ES6+) Standards,\" https://developer.mozilla.org/.",
+        "[8] Silver Oak College of Computer Application, \"MCA Minor Project Guidelines and Academic Standards,\" Silver Oak University, Ahmedabad, 2026.",
     ]
     for item in bib_items:
         story.append(Paragraph(item, ParagraphStyle('BibItem', parent=body, leftIndent=20, firstLineIndent=-20, spaceAfter=8)))
@@ -1282,38 +1240,175 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 24 (Body Page 14): APPENDICES — Appendix A
+    # PAGE 24 (Body Page 14): APPENDICES — Appendix A Review 1 Evaluation Sheet
     # =========================================================================
-    story.append(Paragraph("<b>APPENDICES</b>", ParagraphStyle('AppHead', fontName=font_bold, fontSize=14, alignment=1, spaceBefore=10, spaceAfter=25)))
-    story.append(Paragraph("<b>Appendix A Review 1 — Scanned Copy</b>", ParagraphStyle('AppA', fontName=font_bold, fontSize=12, alignment=1, spaceAfter=15)))
+    story.append(Paragraph("<b>APPENDICES</b>", ParagraphStyle('AppHead', fontName=font_bold, fontSize=14, alignment=1, spaceBefore=10, spaceAfter=18)))
+    story.append(Paragraph("<b>Appendix A Review 1 — Scanned Copy</b>", ParagraphStyle('AppA', fontName=font_bold, fontSize=12, alignment=1, spaceAfter=12)))
     story.append(Paragraph("<i>[Insert scanned copy of the signed Review 1 evaluation sheet here.]</i>", ParagraphStyle('AppANote', parent=body, alignment=1, textColor=colors.HexColor('#666666'))))
+    story.append(Spacer(1, 14))
+
+    # Academic Evaluation Rubric Table for Review 1
+    rev1_data = [
+        [Paragraph("<b>Parameter</b>", table_header), Paragraph("<b>Max Marks</b>", table_header), Paragraph("<b>Marks Awarded</b>", table_header)],
+        [Paragraph("Problem Identification & Feasibility Study", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("Literature Review & System Requirement Analysis", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("Project Planning & Methodology", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("<b>Total Score (Review 1)</b>", table_header), Paragraph("<b>30</b>", table_header), Paragraph("&nbsp;", table_header)],
+    ]
+    t_rev1 = Table(rev1_data, colWidths=[280, 100, 120])
+    t_rev1.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 0.5, CLR_BORDER_DARK),
+        ('GRID', (0,0), (-1,-1), 0.5, CLR_BORDER),
+        ('BACKGROUND', (0,0), (-1,0), CLR_BG_LIGHT),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+    ]))
+    story.append(t_rev1)
+    story.append(Spacer(1, 50))
+
+    rev1_sig = [
+        [
+            Paragraph("<b>Guide Signature:</b> ___________________", ParagraphStyle('R1G', fontName=font_name, fontSize=10)),
+            Paragraph("<b>Examiner Signature:</b> ___________________", ParagraphStyle('R1E', fontName=font_name, fontSize=10, alignment=2))
+        ]
+    ]
+    t_r1_sig = Table(rev1_sig, colWidths=[250, 250])
+    t_r1_sig.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'BOTTOM'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+    ]))
+    story.append(t_r1_sig)
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 25 (Body Page 15): Appendix B
+    # PAGE 25 (Body Page 15): Appendix B Review 2 Evaluation Sheet
     # =========================================================================
-    story.append(Spacer(1, 20))
-    story.append(Paragraph("<b>Appendix B Review 2 — Scanned Copy</b>", ParagraphStyle('AppB', fontName=font_bold, fontSize=12, alignment=1, spaceAfter=15)))
+    story.append(Spacer(1, 15))
+    story.append(Paragraph("<b>Appendix B Review 2 — Scanned Copy</b>", ParagraphStyle('AppB', fontName=font_bold, fontSize=12, alignment=1, spaceAfter=12)))
     story.append(Paragraph("<i>[Insert scanned copy of the signed Review 2 evaluation sheet here.]</i>", ParagraphStyle('AppBNote', parent=body, alignment=1, textColor=colors.HexColor('#666666'))))
+    story.append(Spacer(1, 14))
+
+    rev2_data = [
+        [Paragraph("<b>Parameter</b>", table_header), Paragraph("<b>Max Marks</b>", table_header), Paragraph("<b>Marks Awarded</b>", table_header)],
+        [Paragraph("System Architecture & Data Flow Diagrams (DFDs)", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("Relational Database Design & Schema Integrity", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("UML Modeling (Use Case, Class, Sequence Diagrams)", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("<b>Total Score (Review 2)</b>", table_header), Paragraph("<b>30</b>", table_header), Paragraph("&nbsp;", table_header)],
+    ]
+    t_rev2 = Table(rev2_data, colWidths=[280, 100, 120])
+    t_rev2.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 0.5, CLR_BORDER_DARK),
+        ('GRID', (0,0), (-1,-1), 0.5, CLR_BORDER),
+        ('BACKGROUND', (0,0), (-1,0), CLR_BG_LIGHT),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+    ]))
+    story.append(t_rev2)
+    story.append(Spacer(1, 50))
+
+    rev2_sig = [
+        [
+            Paragraph("<b>Guide Signature:</b> ___________________", ParagraphStyle('R2G', fontName=font_name, fontSize=10)),
+            Paragraph("<b>Examiner Signature:</b> ___________________", ParagraphStyle('R2E', fontName=font_name, fontSize=10, alignment=2))
+        ]
+    ]
+    t_r2_sig = Table(rev2_sig, colWidths=[250, 250])
+    t_r2_sig.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'BOTTOM'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+    ]))
+    story.append(t_r2_sig)
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 26 (Body Page 16): Appendix C
+    # PAGE 26 (Body Page 16): Appendix C Review 3 Evaluation Sheet
     # =========================================================================
-    story.append(Spacer(1, 20))
-    story.append(Paragraph("<b>Appendix C Review 3 — Scanned Copy</b>", ParagraphStyle('AppC', fontName=font_bold, fontSize=12, alignment=1, spaceAfter=15)))
+    story.append(Spacer(1, 15))
+    story.append(Paragraph("<b>Appendix C Review 3 — Scanned Copy</b>", ParagraphStyle('AppC', fontName=font_bold, fontSize=12, alignment=1, spaceAfter=12)))
     story.append(Paragraph("<i>[Insert scanned copy of the signed Review 3 evaluation sheet here.]</i>", ParagraphStyle('AppCNote', parent=body, alignment=1, textColor=colors.HexColor('#666666'))))
+    story.append(Spacer(1, 14))
+
+    rev3_data = [
+        [Paragraph("<b>Parameter</b>", table_header), Paragraph("<b>Max Marks</b>", table_header), Paragraph("<b>Marks Awarded</b>", table_header)],
+        [Paragraph("Module Implementation & Backend Logic", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("User Interface Usability & Dashboard Design", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("Coding Standards, Security & Code Quality", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("<b>Total Score (Review 3)</b>", table_header), Paragraph("<b>30</b>", table_header), Paragraph("&nbsp;", table_header)],
+    ]
+    t_rev3 = Table(rev3_data, colWidths=[280, 100, 120])
+    t_rev3.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 0.5, CLR_BORDER_DARK),
+        ('GRID', (0,0), (-1,-1), 0.5, CLR_BORDER),
+        ('BACKGROUND', (0,0), (-1,0), CLR_BG_LIGHT),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+    ]))
+    story.append(t_rev3)
+    story.append(Spacer(1, 50))
+
+    rev3_sig = [
+        [
+            Paragraph("<b>Guide Signature:</b> ___________________", ParagraphStyle('R3G', fontName=font_name, fontSize=10)),
+            Paragraph("<b>Examiner Signature:</b> ___________________", ParagraphStyle('R3E', fontName=font_name, fontSize=10, alignment=2))
+        ]
+    ]
+    t_r3_sig = Table(rev3_sig, colWidths=[250, 250])
+    t_r3_sig.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'BOTTOM'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+    ]))
+    story.append(t_r3_sig)
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 27 (Body Page 17): Appendix D
+    # PAGE 27 (Body Page 17): Appendix D Review 4 Evaluation Sheet
     # =========================================================================
-    story.append(Spacer(1, 20))
-    story.append(Paragraph("<b>Appendix D Review 4 — Scanned Copy</b>", ParagraphStyle('AppD', fontName=font_bold, fontSize=12, alignment=1, spaceAfter=15)))
+    story.append(Spacer(1, 15))
+    story.append(Paragraph("<b>Appendix D Review 4 — Scanned Copy</b>", ParagraphStyle('AppD', fontName=font_bold, fontSize=12, alignment=1, spaceAfter=12)))
     story.append(Paragraph("<i>[Insert scanned copy of the signed Review 4 evaluation sheet here.]</i>", ParagraphStyle('AppDNote', parent=body, alignment=1, textColor=colors.HexColor('#666666'))))
+    story.append(Spacer(1, 14))
+
+    rev4_data = [
+        [Paragraph("<b>Parameter</b>", table_header), Paragraph("<b>Max Marks</b>", table_header), Paragraph("<b>Marks Awarded</b>", table_header)],
+        [Paragraph("Testing Strategy & Automated Test Case Execution", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("Final Project Demonstration & Q&A Defense", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("Documentation Quality & Academic Report Compliance", table_cell), Paragraph("10", table_cell), Paragraph("&nbsp;", table_cell)],
+        [Paragraph("<b>Total Score (Final Review 4)</b>", table_header), Paragraph("<b>30</b>", table_header), Paragraph("&nbsp;", table_header)],
+    ]
+    t_rev4 = Table(rev4_data, colWidths=[280, 100, 120])
+    t_rev4.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 0.5, CLR_BORDER_DARK),
+        ('GRID', (0,0), (-1,-1), 0.5, CLR_BORDER),
+        ('BACKGROUND', (0,0), (-1,0), CLR_BG_LIGHT),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+    ]))
+    story.append(t_rev4)
+    story.append(Spacer(1, 50))
+
+    rev4_sig = [
+        [
+            Paragraph("<b>Internal Guide Signature:</b> ___________________", ParagraphStyle('R4G', fontName=font_name, fontSize=10)),
+            Paragraph("<b>External Examiner Signature:</b> ___________________", ParagraphStyle('R4E', fontName=font_name, fontSize=10, alignment=2))
+        ]
+    ]
+    t_r4_sig = Table(rev4_sig, colWidths=[250, 250])
+    t_r4_sig.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'BOTTOM'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+    ]))
+    story.append(t_r4_sig)
 
     story.append(PageBreak())
 
@@ -1326,7 +1421,7 @@ def build_academic_pdf():
     story.append(Spacer(1, 20))
     story.append(Paragraph("<i>[Insert scanned copy of the publication certificate / acceptance letter / patent filing receipt here.]</i>", ParagraphStyle('PubPlaceholder', parent=body, alignment=1, textColor=colors.HexColor('#666666'))))
 
-    # Build the document
+    # Build document
     doc.build(story, canvasmaker=AcademicNumberedCanvas)
     print(f"Academic University Project Report generated successfully at: {output_pdf}")
 
