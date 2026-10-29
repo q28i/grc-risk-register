@@ -1,19 +1,20 @@
 """
 Academic University Project Report Generator: GRC_Risk_Register_Project_Report.pdf
-Structured exactly as a clone of the Silver Oak University / MCA Project Report sample:
+Structured exactly as a pure black-and-white academic clone of the Silver Oak University / MCA Project Report sample:
 
 - Exact 28 pages
+- Strict black & white typography (No red, green, blue or other colored fonts)
 - Page 1: Cover Page
 - Page 2: Certificate (Page ii)
 - Page 3: Student Declaration (Page iii)
 - Page 4: Acknowledgment (Page iv)
 - Page 5: Abstract (Page v)
-- Page 6: Table of Contents (Part 1 - Page vi)
-- Page 7: Table of Contents (Part 2 - Page vii)
+- Page 6: Table of Contents (Part 1 - Page vi) — Interactive Clickable Hyperlinks to each chapter/section
+- Page 7: Table of Contents (Part 2 - Page vii) — Interactive Clickable Hyperlinks
 - Page 8: List of Figures (Page viii)
 - Page 9: List of Tables (Page ix)
 - Page 10: List of Abbreviations (Page x)
-- Pages 11-28: Body Chapters 1-7, Bibliography, Appendices A-D, Publication (Pages 1 to 18)
+- Pages 11-28: Body Chapters 1-7, Bibliography with Open-Source Inspiration Links, Appendices A-D, Publication (Pages 1 to 18)
 
 Header & Footer exact specification matching sample:
 - Header: Center-aligned "Cybersecurity Risk Management System" (11pt Times-Bold), horizontal line beneath.
@@ -31,11 +32,9 @@ from reportlab.pdfgen import canvas
 
 PAGE_W, PAGE_H = letter
 
-# Exact Palette & Styling matching sample PDF
-CLR_PRIMARY_RED = colors.HexColor('#CC0000')   # Bright crimson red matching sample: "LIBRARY MANAGEMENT SYSTEM" / red accents
+# Pure Black & White Palette (No colors, strictly academic black text, gray table backgrounds and borders)
 CLR_BLACK = colors.HexColor('#000000')
-CLR_GRAY_TEXT = colors.HexColor('#333333')
-CLR_BG_LIGHT = colors.HexColor('#EFEFEF')      # Subtle gray for table headers
+CLR_BG_LIGHT = colors.HexColor('#EFEFEF')      # Subtle gray for table header cells
 CLR_BORDER = colors.HexColor('#444444')
 CLR_LINE = colors.HexColor('#000000')
 
@@ -45,7 +44,7 @@ ENROLLMENT_NO = "2504070300016"
 
 class SampleExactCanvas(canvas.Canvas):
     """
-    Renders running headers and footers matching the exact visual style of the sample PDF.
+    Renders running headers and footers matching the exact visual style of the sample PDF in pure black & white.
     - Page 1: Cover (No header, no footer, no page number)
     - Pages 2-10: Roman numerals centered at bottom (ii, iii, iv, v, vi, vii, viii, ix, x)
     - Pages 11-28:
@@ -109,15 +108,12 @@ class SampleExactCanvas(canvas.Canvas):
         self.line(54, PAGE_H - 44, PAGE_W - 54, PAGE_H - 44)
 
         # --- Running Bottom Footer ---
-        # Rule above page number
         self.line(54, 58, PAGE_W - 54, 58)
         self.setFont("Times-Bold", 11)
         self.drawCentredString(PAGE_W / 2.0, 64, str(arabic_num))
-        # Rule between page number and college name
         self.line(54, 52, PAGE_W - 54, 52)
         self.setFont("Times-Bold", 11)
         self.drawCentredString(PAGE_W / 2.0, 38, "Silver Oak College of Computer Application")
-        # Rule at the very bottom
         self.line(54, 30, PAGE_W - 54, 30)
 
         self.restoreState()
@@ -145,7 +141,7 @@ def build_academic_pdf():
     f_bold = 'Times-Bold'
     f_italic = 'Times-Italic'
 
-    # Styles
+    # Pure Black Academic Styles
     cover_label = ParagraphStyle(
         'CoverLabel',
         parent=styles['Normal'],
@@ -157,13 +153,13 @@ def build_academic_pdf():
         spaceAfter=15
     )
 
-    cover_title_red = ParagraphStyle(
-        'CoverTitleRed',
+    cover_title_black = ParagraphStyle(
+        'CoverTitleBlack',
         parent=styles['Normal'],
         fontName=f_bold,
         fontSize=16,
         leading=21,
-        textColor=CLR_PRIMARY_RED,
+        textColor=CLR_BLACK,
         alignment=1,
         spaceAfter=25
     )
@@ -282,13 +278,13 @@ def build_academic_pdf():
     story = []
 
     # =========================================================================
-    # PAGE 1: TITLE / COVER PAGE (Sample Page 1)
+    # PAGE 1: TITLE / COVER PAGE (Pure Black & White)
     # =========================================================================
     story.append(Spacer(1, 40))
-    story.append(Paragraph("A PROJECT REPORT<br/>ON", cover_label))
+    story.append(Paragraph("<a name=\"sec_cover\"/>A PROJECT REPORT<br/>ON", cover_label))
     story.append(Spacer(1, 25))
 
-    story.append(Paragraph("CYBERSECURITY RISK MANAGEMENT SYSTEM", cover_title_red))
+    story.append(Paragraph("CYBERSECURITY RISK MANAGEMENT SYSTEM", cover_title_black))
     story.append(Spacer(1, 35))
 
     story.append(Paragraph("<i>Submitted to</i>", ParagraphStyle('SubTo', fontName=f_italic, fontSize=11, alignment=1)))
@@ -303,9 +299,8 @@ def build_academic_pdf():
     story.append(Paragraph("<b>Academic Year: 2026-2027</b>", ParagraphStyle('AY', fontName=f_bold, fontSize=10.5, alignment=1)))
     story.append(Spacer(1, 45))
 
-    # University Logo Banner Block
     univ_cell = [
-        [Paragraph("<font size='14' color='#CC0000'><b>SILVER OAK UNIVERSITY</b></font><br/><font size='8' color='#333333'>EDUCATION TO INNOVATION</font>", ParagraphStyle('UB', fontName=f_bold, alignment=1))]
+        [Paragraph("<b>SILVER OAK UNIVERSITY</b><br/><font size='8'>EDUCATION TO INNOVATION</font>", ParagraphStyle('UB', fontName=f_bold, fontSize=14, leading=18, alignment=1))]
     ]
     t_ub = Table(univ_cell, colWidths=[400])
     t_ub.setStyle(TableStyle([
@@ -319,7 +314,6 @@ def build_academic_pdf():
     story.append(Paragraph("<b>Silver Oak College of Computer Application<br/>Department of Computer Application</b>", ParagraphStyle('ColD', fontName=f_bold, fontSize=11, leading=15, alignment=1)))
     story.append(Spacer(1, 60))
 
-    # Submitted By / Guided By
     sub_guide_table = [
         [
             Paragraph("<b>Submitted By:</b>", ParagraphStyle('SB', fontName=f_bold, fontSize=10.5)),
@@ -342,23 +336,23 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 2: CERTIFICATE (Sample Page 2 - ii)
+    # PAGE 2: CERTIFICATE (Page ii) (Pure Black & White)
     # =========================================================================
     story.append(Spacer(1, 10))
-    story.append(Paragraph("<font size='14' color='#CC0000'><b>SILVER OAK UNIVERSITY</b></font><br/><font size='8' color='#333333'>EDUCATION TO INNOVATION</font>", ParagraphStyle('CertUniv', fontName=f_bold, alignment=1)))
+    story.append(Paragraph("<b>SILVER OAK UNIVERSITY</b><br/><font size='8'>EDUCATION TO INNOVATION</font>", ParagraphStyle('CertUniv', fontName=f_bold, fontSize=14, leading=18, alignment=1)))
     story.append(Spacer(1, 20))
     story.append(HRFlowable(width="100%", thickness=1, color=CLR_BORDER, spaceBefore=0, spaceAfter=25))
 
-    story.append(Paragraph("<b>CERTIFICATE</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_cert\"/><b>CERTIFICATE</b>", cert_heading))
     story.append(Spacer(1, 25))
 
     story.append(Paragraph("<b>Date:</b> ______________", ParagraphStyle('CertDate', fontName=f_bold, fontSize=10.5, alignment=2)))
     story.append(Spacer(1, 35))
 
     cert_text = (
-        f"This is to certify that the project entitled “<font color='#CC0000'><b>CYBERSECURITY RISK MANAGEMENT SYSTEM</b></font>” "
-        f"has been carried out by <font color='#CC0000'><u><b>{STUDENT_NAME} ({ENROLLMENT_NO})</b></u></font> under the guidance of "
-        f"<font color='#CC0000'><u><b>Project Guide Name</b></u></font> in fulfillment of the 3rd Semester Minor Project (CAM6053C) at "
+        f"This is to certify that the project entitled “<b>CYBERSECURITY RISK MANAGEMENT SYSTEM</b>” "
+        f"has been carried out by <u>{STUDENT_NAME} ({ENROLLMENT_NO})</u> under the guidance of "
+        f"<u>Project Guide Name</u> in fulfillment of the 3rd Semester Minor Project (CAM6053C) at "
         f"Silver Oak College of Computer Application, Silver Oak University, Ahmedabad during academic year 2026-2027."
     )
     story.append(Paragraph(cert_text, ParagraphStyle('CertBodyExact', parent=body_text, fontSize=10.5, leading=18)))
@@ -391,16 +385,16 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 3: STUDENT DECLARATION (Sample Page 3 - iii)
+    # PAGE 3: STUDENT DECLARATION (Page iii)
     # =========================================================================
     story.append(Spacer(1, 20))
-    story.append(Paragraph("<b>STUDENT DECLARATION</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_decl\"/><b>STUDENT DECLARATION</b>", cert_heading))
     story.append(Spacer(1, 35))
 
     decl_p1 = (
-        f"I hereby declare that the project entitled \"<font color='#CC0000'><b>CYBERSECURITY RISK MANAGEMENT SYSTEM</b></font>\" "
+        f"I hereby declare that the project entitled \"<b>CYBERSECURITY RISK MANAGEMENT SYSTEM</b>\" "
         f"submitted in partial fulfilment of the requirements for the 3rd Semester of Master of Computer Application (MCA) is an original "
-        f"work carried out by me under the guidance of <font color='#CC0000'><u><b>Guide Name</b></u></font>."
+        f"work carried out by me under the guidance of <u>Guide Name</u>."
     )
     decl_p2 = (
         "I further declare that this project report, or any part thereof, has not been submitted by me or any other person for "
@@ -434,28 +428,28 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 4: ACKNOWLEDGMENT (Sample Page 4 - iv)
+    # PAGE 4: ACKNOWLEDGMENT (Page iv)
     # =========================================================================
     story.append(Spacer(1, 20))
-    story.append(Paragraph("<b>ACKNOWLEDGMENT</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_ack\"/><b>ACKNOWLEDGMENT</b>", cert_heading))
     story.append(Spacer(1, 30))
 
     ack_p1 = (
-        f"The development of the <font color='#CC0000'><u><b>Cybersecurity Risk Management System</b></u></font> was a collaborative "
+        f"The development of the <u><b>Cybersecurity Risk Management System</b></u> was a collaborative "
         f"undertaking, and I am deeply grateful to all who contributed to its successful completion."
     )
     ack_p2 = (
-        f"I extend my sincere appreciation to <font color='#CC0000'><u><b>Project_Guide_Name</b></u></font> for his/her invaluable "
+        f"I extend my sincere appreciation to <u>Project_Guide_Name</u> for his/her invaluable "
         f"guidance, support, and expertise throughout this project. His/Her insightful feedback and direction were instrumental in "
         f"shaping the system's design and functionality."
     )
     ack_p3 = (
         f"I am also grateful to the Department of Computer Application, Silver Oak College of Computer Application, for providing "
         f"the essential resources and infrastructure that made the development of the "
-        f"<font color='#CC0000'><u><b>Cybersecurity Risk Management System</b></u></font> possible. Their support was invaluable."
+        f"<u><b>Cybersecurity Risk Management System</b></u> possible. Their support was invaluable."
     )
     ack_p4 = (
-        f"Furthermore, I would like to thank the <font color='#CC0000'><u><b>security staff</b></u></font> and <font color='#CC0000'><u><b>student members</b></u></font> "
+        f"Furthermore, I would like to thank the <u>security staff</u> and <u>student members</u> "
         f"who generously participated in the requirement-gathering and testing phases. Their feedback was crucial in identifying areas "
         f"for improvement and ensuring the system effectively addresses the real-world demands of a risk governance environment."
     )
@@ -480,10 +474,10 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 5: ABSTRACT (Sample Page 5 - v)
+    # PAGE 5: ABSTRACT (Page v)
     # =========================================================================
     story.append(Spacer(1, 20))
-    story.append(Paragraph("<b>ABSTRACT</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_abstract\"/><b>ABSTRACT</b>", cert_heading))
     story.append(Spacer(1, 28))
 
     abs_p1 = (
@@ -520,57 +514,60 @@ def build_academic_pdf():
     story.append(Paragraph("<i>Keywords:</i> Cybersecurity Risk Management System, Automation, Database Management System (DBMS), SDLC, Web Application.", ParagraphStyle('KW', fontName=f_italic, fontSize=9.5, leading=14)))
     story.append(Spacer(1, 35))
 
-    story.append(Paragraph("<font color='#CC0000'><i>(Abstract will be different for each students as per their title selected)</i></font>", ParagraphStyle('AbsNote', fontName=f_italic, fontSize=9.5, leading=14)))
+    story.append(Paragraph("<i>(Abstract will be different for each students as per their title selected)</i>", ParagraphStyle('AbsNote', fontName=f_italic, fontSize=9.5, leading=14)))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 6: TABLE OF CONTENTS (Part 1 - vi) (Sample Page 6)
+    # PAGE 6: TABLE OF CONTENTS (Part 1 - vi) (With Clickable Page Links)
     # =========================================================================
     story.append(Spacer(1, 15))
-    story.append(Paragraph("<b>TABLE OF CONTENTS</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_toc\"/><b>TABLE OF CONTENTS</b>", cert_heading))
     story.append(Spacer(1, 20))
 
+    # In Table of Contents, wrap titles and page numbers in <a href="#anchor"> so clicking directly navigates to the target page!
     toc_page1 = [
-        ("Title Page", "i"),
-        ("Certificate", "ii"),
-        ("Student Declaration", "iii"),
-        ("Acknowledgement", "iv"),
-        ("Abstract", "v"),
-        ("Table of Contents", "vi"),
-        ("List of Figures", "viii"),
-        ("List of Tables", "ix"),
-        ("List of Abbreviations", "x"),
-        ("<b>Chapter 1: Introduction</b>", "<b>1</b>"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;1.1 Background", "1"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;1.2 Problem Statement", "2"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;1.3 Objectives of the Project", "2"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;1.4 Scope of the Project", "2"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;1.5 Organization of the Report", "2"),
-        ("<b>Chapter 2: Literature Review</b>", "<b>3</b>"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;2.1 Existing Systems", "3"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;2.2 Comparative Analysis", "3"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;2.3 Summary", "3"),
-        ("<b>Chapter 3: System Requirement Analysis</b>", "<b>4</b>"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;3.1 Functional Requirements", "4"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;3.2 Non-Functional Requirements", "4"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;3.3 Hardware Requirements", "4"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;3.4 Software Requirements", "5"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;3.5 Feasibility Study", "5"),
-        ("<b>Chapter 4: System Design and Methodology</b>", "<b>6</b>"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;4.1 System Architecture", "6"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;4.2 Data Flow Diagrams", "6"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;4.3 Entity-Relationship Diagram", "6"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;4.4 Database Design", "6"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;4.5 UML Diagrams", "7"),
-        ("<b>Chapter 5: Implementation and Coding</b>", "<b>8</b>"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;5.1 Development Environment", "8"),
+        ("Title Page", "i", "sec_cover"),
+        ("Certificate", "ii", "sec_cert"),
+        ("Student Declaration", "iii", "sec_decl"),
+        ("Acknowledgement", "iv", "sec_ack"),
+        ("Abstract", "v", "sec_abstract"),
+        ("Table of Contents", "vi", "sec_toc"),
+        ("List of Figures", "viii", "sec_lof"),
+        ("List of Tables", "ix", "sec_lot"),
+        ("List of Abbreviations", "x", "sec_loa"),
+        ("<b>Chapter 1: Introduction</b>", "<b>1</b>", "sec_ch1"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;1.1 Background", "1", "sec_1_1"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;1.2 Problem Statement", "2", "sec_1_2"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;1.3 Objectives of the Project", "2", "sec_1_3"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;1.4 Scope of the Project", "2", "sec_1_4"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;1.5 Organization of the Report", "2", "sec_1_5"),
+        ("<b>Chapter 2: Literature Review</b>", "<b>3</b>", "sec_ch2"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;2.1 Existing Systems", "3", "sec_2_1"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;2.2 Comparative Analysis", "3", "sec_2_2"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;2.3 Summary", "3", "sec_2_3"),
+        ("<b>Chapter 3: System Requirement Analysis</b>", "<b>4</b>", "sec_ch3"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;3.1 Functional Requirements", "4", "sec_3_1"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;3.2 Non-Functional Requirements", "4", "sec_3_2"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;3.3 Hardware Requirements", "4", "sec_3_3"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;3.4 Software Requirements", "5", "sec_3_4"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;3.5 Feasibility Study", "5", "sec_3_5"),
+        ("<b>Chapter 4: System Design and Methodology</b>", "<b>6</b>", "sec_ch4"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;4.1 System Architecture", "6", "sec_4_1"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;4.2 Data Flow Diagrams", "6", "sec_4_2"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;4.3 Entity-Relationship Diagram", "6", "sec_4_3"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;4.4 Database Design", "6", "sec_4_4"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;4.5 UML Diagrams", "7", "sec_4_5"),
+        ("<b>Chapter 5: Implementation and Coding</b>", "<b>8</b>", "sec_ch5"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;5.1 Development Environment", "8", "sec_5_1"),
     ]
 
     t_data_p1 = []
-    for title_txt, pg in toc_page1:
-        p_title = Paragraph(title_txt, ParagraphStyle('TOCItem', fontName=f_roman, fontSize=9.5, leading=13))
-        p_page = Paragraph(pg, ParagraphStyle('TOCPg', fontName=f_roman, fontSize=9.5, leading=13, alignment=2))
+    for title_txt, pg, anchor_name in toc_page1:
+        linked_title = f'<a href="#{anchor_name}">{title_txt}</a>'
+        linked_pg = f'<a href="#{anchor_name}">{pg}</a>'
+        p_title = Paragraph(linked_title, ParagraphStyle('TOCItem', fontName=f_roman, fontSize=9.5, leading=13))
+        p_page = Paragraph(linked_pg, ParagraphStyle('TOCPg', fontName=f_roman, fontSize=9.5, leading=13, alignment=2))
         t_data_p1.append([p_title, p_page])
 
     t_toc1 = Table(t_data_p1, colWidths=[430, 70])
@@ -586,30 +583,32 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 7: TABLE OF CONTENTS (Part 2 - vii) (Sample Page 7)
+    # PAGE 7: TABLE OF CONTENTS (Part 2 - vii) (With Clickable Page Links)
     # =========================================================================
     story.append(Spacer(1, 15))
     toc_page2 = [
-        ("&nbsp;&nbsp;&nbsp;&nbsp;5.2 Module Description", "8"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;5.3 Coding Standards", "8"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;5.4 Sample Code Snippets", "9"),
-        ("<b>Chapter 6: Testing and Results Analysis</b>", "<b>10</b>"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;6.1 Testing Objectives", "10"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;6.2 Testing Methods", "10"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;6.3 Test Cases", "10"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;6.4 Results Analysis", "11"),
-        ("<b>Chapter 7: Conclusion and Future Scope</b>", "<b>12</b>"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;7.1 Conclusion", "12"),
-        ("&nbsp;&nbsp;&nbsp;&nbsp;7.2 Future Scope", "12"),
-        ("<b>Bibliography & References</b>", "<b>13</b>"),
-        ("<b>Appendices</b>", "<b>14</b>"),
-        ("<b>Publication / Patent / Research Output</b>", "<b>18</b>"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;5.2 Module Description", "8", "sec_5_2"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;5.3 Coding Standards", "8", "sec_5_3"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;5.4 Sample Code Snippets", "9", "sec_5_4"),
+        ("<b>Chapter 6: Testing and Results Analysis</b>", "<b>10</b>", "sec_ch6"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;6.1 Testing Objectives", "10", "sec_6_1"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;6.2 Testing Methods", "10", "sec_6_2"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;6.3 Test Cases", "10", "sec_6_3"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;6.4 Results Analysis", "11", "sec_6_4"),
+        ("<b>Chapter 7: Conclusion and Future Scope</b>", "<b>12</b>", "sec_ch7"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;7.1 Conclusion", "12", "sec_7_1"),
+        ("&nbsp;&nbsp;&nbsp;&nbsp;7.2 Future Scope", "12", "sec_7_2"),
+        ("<b>Bibliography & References</b>", "<b>13</b>", "sec_bib"),
+        ("<b>Appendices</b>", "<b>14</b>", "sec_app"),
+        ("<b>Publication / Patent / Research Output</b>", "<b>18</b>", "sec_pub"),
     ]
 
     t_data_p2 = []
-    for title_txt, pg in toc_page2:
-        p_title = Paragraph(title_txt, ParagraphStyle('TOCItem2', fontName=f_roman, fontSize=9.5, leading=14))
-        p_page = Paragraph(pg, ParagraphStyle('TOCPg2', fontName=f_roman, fontSize=9.5, leading=14, alignment=2))
+    for title_txt, pg, anchor_name in toc_page2:
+        linked_title = f'<a href="#{anchor_name}">{title_txt}</a>'
+        linked_pg = f'<a href="#{anchor_name}">{pg}</a>'
+        p_title = Paragraph(linked_title, ParagraphStyle('TOCItem2', fontName=f_roman, fontSize=9.5, leading=14))
+        p_page = Paragraph(linked_pg, ParagraphStyle('TOCPg2', fontName=f_roman, fontSize=9.5, leading=14, alignment=2))
         t_data_p2.append([p_title, p_page])
 
     t_toc2 = Table(t_data_p2, colWidths=[430, 70])
@@ -625,10 +624,10 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 8: LIST OF FIGURES (viii) (Sample Page 8)
+    # PAGE 8: LIST OF FIGURES (viii)
     # =========================================================================
     story.append(Spacer(1, 20))
-    story.append(Paragraph("<b>LIST OF FIGURES</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_lof\"/><b>LIST OF FIGURES</b>", cert_heading))
     story.append(Spacer(1, 25))
 
     lof_data = [
@@ -658,10 +657,10 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 9: LIST OF TABLES (ix) (Sample Page 9)
+    # PAGE 9: LIST OF TABLES (ix)
     # =========================================================================
     story.append(Spacer(1, 20))
-    story.append(Paragraph("<b>LIST OF TABLES</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_lot\"/><b>LIST OF TABLES</b>", cert_heading))
     story.append(Spacer(1, 25))
 
     lot_data = [
@@ -690,10 +689,10 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 10: LIST OF ABBREVIATIONS (x) (Sample Page 10)
+    # PAGE 10: LIST OF ABBREVIATIONS (x)
     # =========================================================================
     story.append(Spacer(1, 20))
-    story.append(Paragraph("<b>LIST OF ABBREVIATIONS</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_loa\"/><b>LIST OF ABBREVIATIONS</b>", cert_heading))
     story.append(Spacer(1, 25))
 
     loa_data = [
@@ -730,12 +729,12 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 11 (Body Page 1): CHAPTER 1 — Introduction (Sample Page 11)
+    # PAGE 11 (Body Page 1): CHAPTER 1 — Introduction (1.1, 1.2, 1.3)
     # =========================================================================
-    story.append(Paragraph("<b>CHAPTER 1</b>", chapter_label))
+    story.append(Paragraph("<a name=\"sec_ch1\"/><b>CHAPTER 1</b>", chapter_label))
     story.append(Paragraph("<b>Introduction</b>", chapter_title))
 
-    story.append(Paragraph("<b>1.1 Background</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_1_1\"/><b>1.1 Background</b>", sec_heading))
     intro_bg = (
         "Organizations have traditionally served as custodians of critical IT infrastructure, providing access to digital services, "
         "databases, and operational networks to staff, faculty, and stakeholders. However, the manual processes historically used to manage "
@@ -749,7 +748,7 @@ def build_academic_pdf():
     )
     story.append(Paragraph(intro_bg, body_text))
 
-    story.append(Paragraph("<b>1.2 Problem Statement</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_1_2\"/><b>1.2 Problem Statement</b>", sec_heading))
     intro_ps = (
         "The existing manual risk tracking system at many institutions relies on physical registers and spreadsheets to track IT assets "
         "and operational threats. This approach suffers from several drawbacks: difficulty in searching for a specific risk scenario, "
@@ -759,7 +758,7 @@ def build_academic_pdf():
     )
     story.append(Paragraph(intro_ps, body_text))
 
-    story.append(Paragraph("<b>1.3 Objectives of the Project</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_1_3\"/><b>1.3 Objectives of the Project</b>", sec_heading))
     story.append(Paragraph("• To design and develop a centralized database for storing asset and risk information.", bullet_text))
     story.append(Paragraph("• To automate the process of risk evaluation, score calculation, and treatment tracking.", bullet_text))
     story.append(Paragraph("• To provide an efficient search mechanism for locating risks by title, asset, category, or level.", bullet_text))
@@ -767,7 +766,7 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 12 (Body Page 2): CHAPTER 1 (Cont.) (Sample Page 12)
+    # PAGE 12 (Body Page 2): CHAPTER 1 (Cont. — 1.3 cont., 1.4, 1.5)
     # =========================================================================
     story.append(Spacer(1, 10))
     story.append(Paragraph("• To generate reports such as overdue mitigations, high-severity risks, and audit collection summaries.", bullet_text))
@@ -775,7 +774,7 @@ def build_academic_pdf():
     story.append(Paragraph("• To reduce manual effort, paperwork, and human error in risk management operations.", bullet_text))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<b>1.4 Scope of the Project</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_1_4\"/><b>1.4 Scope of the Project</b>", sec_heading))
     intro_scope = (
         "The scope of this project is limited to automating the core functional areas of an institutional or departmental risk register, "
         "namely asset cataloguing, risk scenario evaluation, treatment lifecycle tracking, fine audit logging, and basic reporting. "
@@ -786,7 +785,7 @@ def build_academic_pdf():
     story.append(Paragraph(intro_scope, body_text))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<b>1.5 Organization of the Report</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_1_5\"/><b>1.5 Organization of the Report</b>", sec_heading))
     intro_org = (
         "This report is organized into seven chapters. Chapter 1 introduces the project background, problem statement, objectives, "
         "and scope. Chapter 2 reviews existing risk management solutions and related literature. Chapter 3 details the system requirement "
@@ -799,12 +798,12 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 13 (Body Page 3): CHAPTER 2 — Literature Review (Sample Page 13)
+    # PAGE 13 (Body Page 3): CHAPTER 2 — Literature Review (2.1, 2.2, 2.3)
     # =========================================================================
-    story.append(Paragraph("<b>CHAPTER 2</b>", chapter_label))
+    story.append(Paragraph("<a name=\"sec_ch2\"/><b>CHAPTER 2</b>", chapter_label))
     story.append(Paragraph("<b>Literature Review</b>", chapter_title))
 
-    story.append(Paragraph("<b>2.1 Existing Systems</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_2_1\"/><b>2.1 Existing Systems</b>", sec_heading))
     lit_ex = (
         "Several commercial and open-source risk management solutions are currently available, ranging from simple spreadsheet-based "
         "tracking tools to comprehensive enterprise systems such as ServiceNow GRC and RSA Archer. These systems typically provide "
@@ -816,7 +815,7 @@ def build_academic_pdf():
     )
     story.append(Paragraph(lit_ex, body_text))
 
-    story.append(Paragraph("<b>2.2 Comparative Analysis</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_2_2\"/><b>2.2 Comparative Analysis</b>", sec_heading))
     lit_comp = (
         "A comparative study of existing systems reveals common strengths such as centralized cataloguing, automated risk calculation, "
         "and multi-user access. Common limitations include high licensing costs, complex deployment requirements, and limited customization "
@@ -825,7 +824,7 @@ def build_academic_pdf():
     )
     story.append(Paragraph(lit_comp, body_text))
 
-    story.append(Paragraph("<b>2.3 Summary</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_2_3\"/><b>2.3 Summary</b>", sec_heading))
     lit_sum = (
         "The literature review establishes a strong case for automating risk management operations and highlights the specific gaps — namely "
         "cost, complexity, and lack of customization — that the proposed system seeks to address through a modular, database-driven design."
@@ -835,12 +834,12 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 14 (Body Page 4): CHAPTER 3 — Requirements (Sample Page 14)
+    # PAGE 14 (Body Page 4): CHAPTER 3 — Requirements (3.1, 3.2, 3.3)
     # =========================================================================
-    story.append(Paragraph("<b>CHAPTER 3</b>", chapter_label))
+    story.append(Paragraph("<a name=\"sec_ch3\"/><b>CHAPTER 3</b>", chapter_label))
     story.append(Paragraph("<b>System Requirement Analysis</b>", chapter_title))
 
-    story.append(Paragraph("<b>3.1 Functional Requirements</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_3_1\"/><b>3.1 Functional Requirements</b>", sec_heading))
     story.append(Paragraph("Functional requirements define the specific behaviours and functions that the system must support. Table 3.1 summarizes the key functional requirements identified for the Cybersecurity Risk Management System.", body_text))
 
     fr_data = [
@@ -865,7 +864,7 @@ def build_academic_pdf():
     story.append(t_fr)
     story.append(Spacer(1, 8))
 
-    story.append(Paragraph("<b>3.2 Non-Functional Requirements</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_3_2\"/><b>3.2 Non-Functional Requirements</b>", sec_heading))
     story.append(Paragraph("• <b>Usability:</b> The system shall provide a simple and intuitive graphical user interface.", bullet_text))
     story.append(Paragraph("• <b>Reliability:</b> The system shall ensure accurate and consistent data storage and retrieval via ACID transactional consistency.", bullet_text))
     story.append(Paragraph("• <b>Performance:</b> Search and transaction operations shall complete within two seconds under normal load.", bullet_text))
@@ -873,7 +872,7 @@ def build_academic_pdf():
     story.append(Paragraph("• <b>Maintainability:</b> The modular design shall allow easy addition of new features in the future.", bullet_text))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<b>3.3 Hardware Requirements</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_3_3\"/><b>3.3 Hardware Requirements</b>", sec_heading))
     hw_data = [
         [Paragraph("<b>Component</b>", table_head), Paragraph("<b>Specification</b>", table_head)],
         [Paragraph("Processor", table_cell), Paragraph("Intel Core i3 or above", table_cell)],
@@ -894,9 +893,9 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 15 (Body Page 5): CHAPTER 3 (Cont.) (Sample Page 15)
+    # PAGE 15 (Body Page 5): CHAPTER 3 (Cont. — 3.4, 3.5, Use Case)
     # =========================================================================
-    story.append(Paragraph("<b>3.4 Software Requirements</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_3_4\"/><b>3.4 Software Requirements</b>", sec_heading))
     sw_data = [
         [Paragraph("<b>Component</b>", table_head), Paragraph("<b>Specification</b>", table_head)],
         [Paragraph("Operating System", table_cell), Paragraph("Windows 10 / 11", table_cell)],
@@ -916,7 +915,7 @@ def build_academic_pdf():
     story.append(t_sw)
     story.append(Spacer(1, 8))
 
-    story.append(Paragraph("<b>3.5 Feasibility Study</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_3_5\"/><b>3.5 Feasibility Study</b>", sec_heading))
     story.append(Paragraph("<b>3.5.1 Technical Feasibility</b>", subsec_heading))
     story.append(Paragraph(
         "The technologies required for developing the proposed system — including the chosen programming language, "
@@ -937,56 +936,56 @@ def build_academic_pdf():
     ))
     story.append(Spacer(1, 10))
 
-    story.append(Paragraph("[Figure 3.1: Use Case Diagram of Cybersecurity Risk Management System — to be inserted here]", ParagraphStyle('FN', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Figure 3.1: Use Case Diagram of Cybersecurity Risk Management System — to be inserted here]", ParagraphStyle('FN', parent=body_text, alignment=1, textColor=CLR_BLACK)))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 16 (Body Page 6): CHAPTER 4 — System Design (Sample Page 16)
+    # PAGE 16 (Body Page 6): CHAPTER 4 — System Design (4.1, 4.2, 4.3, 4.4)
     # =========================================================================
-    story.append(Paragraph("<b>CHAPTER 4</b>", chapter_label))
+    story.append(Paragraph("<a name=\"sec_ch4\"/><b>CHAPTER 4</b>", chapter_label))
     story.append(Paragraph("<b>System Design and Methodology</b>", chapter_title))
 
-    story.append(Paragraph("<b>4.1 System Architecture</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_4_1\"/><b>4.1 System Architecture</b>", sec_heading))
     story.append(Paragraph(
         "The Cybersecurity Risk Management System follows a three-tier architecture consisting of a presentation layer "
         "(user interface), an application layer (business logic), and a data layer (database). This separation of concerns "
         "improves maintainability and allows each layer to be modified independently without affecting the others.", body_text
     ))
     story.append(Spacer(1, 4))
-    story.append(Paragraph("[Figure 4.1: System Architecture Diagram — to be inserted here]", ParagraphStyle('F41', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Figure 4.1: System Architecture Diagram — to be inserted here]", ParagraphStyle('F41', parent=body_text, alignment=1, textColor=CLR_BLACK)))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<b>4.2 Data Flow Diagrams</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_4_2\"/><b>4.2 Data Flow Diagrams</b>", sec_heading))
     story.append(Paragraph(
         "The Data Flow Diagram (DFD) illustrates the flow of information through the system. The Level 0 DFD (context diagram) "
         "represents the system as a single process interacting with external entities such as Admin and Staff. The Level 1 DFD "
         "decomposes this into major sub-processes, including Asset Management, Risk Evaluation, and Report Generation.", body_text
     ))
     story.append(Spacer(1, 4))
-    story.append(Paragraph("[Figure 4.2: Data Flow Diagram (Level 0) — to be inserted here]", ParagraphStyle('F42', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
-    story.append(Paragraph("[Figure 4.3: Data Flow Diagram (Level 1) — to be inserted here]", ParagraphStyle('F43', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Figure 4.2: Data Flow Diagram (Level 0) — to be inserted here]", ParagraphStyle('F42', parent=body_text, alignment=1, textColor=CLR_BLACK)))
+    story.append(Paragraph("[Figure 4.3: Data Flow Diagram (Level 1) — to be inserted here]", ParagraphStyle('F43', parent=body_text, alignment=1, textColor=CLR_BLACK)))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<b>4.3 Entity-Relationship Diagram</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_4_3\"/><b>4.3 Entity-Relationship Diagram</b>", sec_heading))
     story.append(Paragraph(
         "The Entity-Relationship (ER) Diagram models the relationships among the key entities of the system, namely Asset, "
         "Risk, and AuditLog. Each Asset can be involved in multiple Risks, and each Risk references its parent Asset, establishing "
         "a one-to-many relationship resolved through foreign keys.", body_text
     ))
     story.append(Spacer(1, 4))
-    story.append(Paragraph("[Figure 4.4: Entity-Relationship Diagram — to be inserted here]", ParagraphStyle('F44', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Figure 4.4: Entity-Relationship Diagram — to be inserted here]", ParagraphStyle('F44', parent=body_text, alignment=1, textColor=CLR_BLACK)))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<b>4.4 Database Design</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_4_4\"/><b>4.4 Database Design</b>", sec_heading))
     story.append(Paragraph("The database for the Cybersecurity Risk Management System consists of the following major tables, described below.", body_text))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 17 (Body Page 7): CHAPTER 4 (Cont.) (Sample Page 17)
+    # PAGE 17 (Body Page 7): CHAPTER 4 (Cont. — Tables 4.1, 4.2, 4.3, 4.5 UML)
     # =========================================================================
-    story.append(Paragraph("<i>4.4.1 tbl_Asset</i>", ParagraphStyle('SubItal1', fontName=f_bold, fontSize=10, textColor=colors.HexColor('#003366'), spaceBefore=2, spaceAfter=4)))
+    story.append(Paragraph("<i>4.4.1 tbl_Asset</i>", ParagraphStyle('SubItal1', fontName=f_bold, fontSize=10, textColor=CLR_BLACK, spaceBefore=2, spaceAfter=4)))
     ast_cols = [
         [Paragraph("<b>Field Name</b>", table_head), Paragraph("<b>Data Type</b>", table_head), Paragraph("<b>Description</b>", table_head)],
         [Paragraph("AssetID", table_cell), Paragraph("Int (PK)", table_cell), Paragraph("Unique identifier for each asset", table_cell)],
@@ -1005,7 +1004,7 @@ def build_academic_pdf():
     story.append(t_ast)
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<i>4.4.2 tbl_Risk</i>", ParagraphStyle('SubItal2', fontName=f_bold, fontSize=10, textColor=colors.HexColor('#003366'), spaceBefore=2, spaceAfter=4)))
+    story.append(Paragraph("<i>4.4.2 tbl_Risk</i>", ParagraphStyle('SubItal2', fontName=f_bold, fontSize=10, textColor=CLR_BLACK, spaceBefore=2, spaceAfter=4)))
     rsk_cols = [
         [Paragraph("<b>Field Name</b>", table_head), Paragraph("<b>Data Type</b>", table_head), Paragraph("<b>Description</b>", table_head)],
         [Paragraph("RiskID", table_cell), Paragraph("Int (PK)", table_cell), Paragraph("Unique identifier for each risk", table_cell)],
@@ -1027,7 +1026,7 @@ def build_academic_pdf():
     story.append(t_rsk)
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<i>4.4.3 tbl_AuditLog</i>", ParagraphStyle('SubItal3', fontName=f_bold, fontSize=10, textColor=colors.HexColor('#003366'), spaceBefore=2, spaceAfter=4)))
+    story.append(Paragraph("<i>4.4.3 tbl_AuditLog</i>", ParagraphStyle('SubItal3', fontName=f_bold, fontSize=10, textColor=CLR_BLACK, spaceBefore=2, spaceAfter=4)))
     aud_cols = [
         [Paragraph("<b>Field Name</b>", table_head), Paragraph("<b>Data Type</b>", table_head), Paragraph("<b>Description</b>", table_head)],
         [Paragraph("LogID", table_cell), Paragraph("Int (PK)", table_cell), Paragraph("Unique identifier for each transaction", table_cell)],
@@ -1046,7 +1045,7 @@ def build_academic_pdf():
     story.append(t_aud)
     story.append(Spacer(1, 8))
 
-    story.append(Paragraph("<b>4.5 UML Diagrams</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_4_5\"/><b>4.5 UML Diagrams</b>", sec_heading))
     story.append(Paragraph(
         "Unified Modeling Language (UML) diagrams were used to model the system from different perspectives. "
         "The Use Case Diagram represents the interactions between actors (Admin, Staff) and the system. The Class Diagram "
@@ -1054,26 +1053,26 @@ def build_academic_pdf():
         "illustrates the interaction sequence for the risk evaluation process.", body_text
     ))
     story.append(Spacer(1, 2))
-    story.append(Paragraph("[Figure 3.1: Use Case Diagram — to be inserted here]", ParagraphStyle('U1', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
-    story.append(Paragraph("[Figure 4.5: Class Diagram — to be inserted here]", ParagraphStyle('U2', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
-    story.append(Paragraph("[Figure 4.6: Sequence Diagram — Risk Assessment Process — to be inserted here]", ParagraphStyle('U3', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Figure 3.1: Use Case Diagram — to be inserted here]", ParagraphStyle('U1', parent=body_text, alignment=1, textColor=CLR_BLACK)))
+    story.append(Paragraph("[Figure 4.5: Class Diagram — to be inserted here]", ParagraphStyle('U2', parent=body_text, alignment=1, textColor=CLR_BLACK)))
+    story.append(Paragraph("[Figure 4.6: Sequence Diagram — Risk Assessment Process — to be inserted here]", ParagraphStyle('U3', parent=body_text, alignment=1, textColor=CLR_BLACK)))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 18 (Body Page 8): CHAPTER 5 — Implementation (Sample Page 18)
+    # PAGE 18 (Body Page 8): CHAPTER 5 — Implementation (5.1, 5.2, 5.3)
     # =========================================================================
-    story.append(Paragraph("<b>CHAPTER 5</b>", chapter_label))
+    story.append(Paragraph("<a name=\"sec_ch5\"/><b>CHAPTER 5</b>", chapter_label))
     story.append(Paragraph("<b>Implementation and Coding</b>", chapter_title))
 
-    story.append(Paragraph("<b>5.1 Development Environment</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_5_1\"/><b>5.1 Development Environment</b>", sec_heading))
     story.append(Paragraph(
         "The Cybersecurity Risk Management System was developed using a standard integrated development environment configured "
         "with the front-end, back-end, and database technologies listed in Section 3.4. Version control was maintained throughout "
         "development to track changes and manage revisions of the source code.", body_text
     ))
 
-    story.append(Paragraph("<b>5.2 Module Description</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_5_2\"/><b>5.2 Module Description</b>", sec_heading))
     story.append(Paragraph("<b>5.2.1 Login Module</b>", subsec_heading))
     story.append(Paragraph("This module authenticates Admin and Staff users based on a username and password, and redirects them to the appropriate dashboard based on their assigned role.", body_text))
 
@@ -1089,7 +1088,7 @@ def build_academic_pdf():
     story.append(Paragraph("<b>5.2.5 Report Module</b>", subsec_heading))
     story.append(Paragraph("This module generates reports such as currently open risks, high-severity risks, and audit collection summaries, which can be viewed or exported by the administrator.", body_text))
 
-    story.append(Paragraph("<b>5.3 Coding Standards</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_5_3\"/><b>5.3 Coding Standards</b>", sec_heading))
     story.append(Paragraph(
         "Consistent naming conventions, indentation, and inline comments were followed throughout the codebase to improve "
         "readability and maintainability. Reusable functions were used wherever possible to minimize code duplication, and input "
@@ -1099,12 +1098,12 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 19 (Body Page 9): CHAPTER 5 (Cont.) (Sample Page 19)
+    # PAGE 19 (Body Page 9): CHAPTER 5 (Cont. — 5.4 Snippet & Screenshots)
     # =========================================================================
     story.append(Paragraph("wherever possible to minimize code duplication, and input validation was implemented at both the client and server sides to maintain data integrity.", body_text))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<b>5.4 Sample Code Snippets</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_5_4\"/><b>5.4 Sample Code Snippets</b>", sec_heading))
     story.append(Paragraph(
         "The following illustrative snippet demonstrates the risk calculation logic used in the Calculation Module (sample pseudocode for reference purposes):", body_text
     ))
@@ -1140,19 +1139,19 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 20 (Body Page 10): CHAPTER 6 — Testing (Sample Page 20)
+    # PAGE 20 (Body Page 10): CHAPTER 6 — Testing (6.1, 6.2, 6.3)
     # =========================================================================
-    story.append(Paragraph("<b>CHAPTER 6</b>", chapter_label))
+    story.append(Paragraph("<a name=\"sec_ch6\"/><b>CHAPTER 6</b>", chapter_label))
     story.append(Paragraph("<b>Testing and Results Analysis</b>", chapter_title))
 
-    story.append(Paragraph("<b>6.1 Testing Objectives</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_6_1\"/><b>6.1 Testing Objectives</b>", sec_heading))
     story.append(Paragraph(
         "The primary objective of testing was to verify that each module of the Cybersecurity Risk Management System functions "
         "correctly, individually and in integration with other modules, and that the system meets the functional and non-functional "
         "requirements identified in Chapter 3.", body_text
     ))
 
-    story.append(Paragraph("<b>6.2 Testing Methods</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_6_2\"/><b>6.2 Testing Methods</b>", sec_heading))
     story.append(Paragraph(
         "A combination of Unit Testing, Integration Testing, and User Acceptance Testing (UAT) was performed. Unit testing verified "
         "individual functions such as risk calculation and search filtering. Integration testing verified the correct interaction "
@@ -1160,7 +1159,7 @@ def build_academic_pdf():
         "real-world usability.", body_text
     ))
 
-    story.append(Paragraph("<b>6.3 Test Cases</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_6_3\"/><b>6.3 Test Cases</b>", sec_heading))
     story.append(Paragraph("<b>6.3.1 Login Module</b>", subsec_heading))
 
     tc_login = [
@@ -1214,7 +1213,7 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 21 (Body Page 11): CHAPTER 6 (Cont.) (Sample Page 21)
+    # PAGE 21 (Body Page 11): CHAPTER 6 (Cont. — Test Cases & Results Analysis)
     # =========================================================================
     story.append(Spacer(1, 10))
     tc_calc_cont = [
@@ -1232,7 +1231,7 @@ def build_academic_pdf():
     story.append(t_tc_cont)
     story.append(Spacer(1, 12))
 
-    story.append(Paragraph("<b>6.4 Results Analysis</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_6_4\"/><b>6.4 Results Analysis</b>", sec_heading))
     results_text = (
         "All executed test cases across the Login, Asset Inventory, and Risk Calculation modules produced the expected results, "
         "indicating that the core functionality of the Cybersecurity Risk Management System operates correctly and reliably. "
@@ -1242,17 +1241,17 @@ def build_academic_pdf():
     story.append(Paragraph(results_text, body_text))
     story.append(Spacer(1, 10))
 
-    story.append(Paragraph("[Figure 6.1: Graph Showing Test Case Pass/Fail Ratio — to be inserted here]", ParagraphStyle('F61', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Figure 6.1: Graph Showing Test Case Pass/Fail Ratio — to be inserted here]", ParagraphStyle('F61', parent=body_text, alignment=1, textColor=CLR_BLACK)))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 22 (Body Page 12): CHAPTER 7 — Conclusion (Sample Page 22)
+    # PAGE 22 (Body Page 12): CHAPTER 7 — Conclusion (7.1, 7.2)
     # =========================================================================
-    story.append(Paragraph("<b>CHAPTER 7</b>", chapter_label))
+    story.append(Paragraph("<a name=\"sec_ch7\"/><b>CHAPTER 7</b>", chapter_label))
     story.append(Paragraph("<b>Conclusion and Future Scope</b>", chapter_title))
 
-    story.append(Paragraph("<b>7.1 Conclusion</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_7_1\"/><b>7.1 Conclusion</b>", sec_heading))
     conc_text = (
         "The Cybersecurity Risk Management System successfully automates the core operations of a college or departmental risk register, "
         "including asset cataloguing, risk assessment, evaluation transactions, and score calculation. The system significantly reduces "
@@ -1263,7 +1262,7 @@ def build_academic_pdf():
     story.append(Paragraph(conc_text, body_text))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("<b>7.2 Future Scope</b>", sec_heading))
+    story.append(Paragraph("<a name=\"sec_7_2\"/><b>7.2 Future Scope</b>", sec_heading))
     story.append(Paragraph("• Integration of an Online Public Access Catalogue (OPAC) to allow department members to search the risk catalogue remotely.", bullet_text))
     story.append(Paragraph("• Implementation of a barcode/RFID-based system for faster hardware asset issue and return.", bullet_text))
     story.append(Paragraph("• Integration of an online payment gateway for compliance fee and fine payment.", bullet_text))
@@ -1273,87 +1272,91 @@ def build_academic_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 23 (Body Page 13): BIBLIOGRAPHY & REFERENCES (Sample Page 23)
+    # PAGE 23 (Body Page 13): BIBLIOGRAPHY & REFERENCES (With Open-Source Inspiration Repos)
     # =========================================================================
-    story.append(Paragraph("<b>BIBLIOGRAPHY & REFERENCES</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_bib\"/><b>BIBLIOGRAPHY & REFERENCES</b>", cert_heading))
     story.append(Spacer(1, 15))
 
+    # Real, verifiable open-source repositories and standards cited as architectural inspiration
     bib_items = [
-        "[1] Author Name, \"Title of Referenced Book,\" Publisher, Edition, Year.",
-        "[2] Author Name, \"Title of Referenced Research Paper,\" Journal/Conference Name, Volume, Issue, Year, Page Numbers.",
-        "[3] Official documentation of the programming language / framework used (e.g., Python Reference Manual, https://docs.python.org/3/).",
-        "[4] Official documentation of the development tools used (e.g., Visual Studio Code Documentation).",
-        "[5] Relevant online tutorials, technical articles, or W3Schools references consulted during development.",
+        "[1] SimpleRisk Community Edition (Risk Matrix & Assessment Engine Reference), SimpleRisk LLC, https://github.com/simplerisk/core.",
+        "[2] Bottle Web Framework (Zero-Dependency Standard Library Server Architecture Reference), Marcel Hellkamp, https://github.com/bottlepy/bottle.",
+        "[3] Django Software Foundation, \"Django Authentication & PBKDF2 Password Security Architecture,\" https://github.com/django/django/tree/main/django/contrib/auth.",
+        "[4] PaperTrail (Audit Logging & Mutation History Reference), PaperTrail Core Team, https://github.com/paper-trail-gem/paper_trail.",
+        "[5] Tabler UI (Single-Page Application Dashboard & Responsive Component Architecture), Tabler Team, https://github.com/tabler/tabler.",
+        "[6] Python Software Foundation, \"The Python Standard Library Documentation (http.server, sqlite3, hashlib, secrets),\" Python 3 Documentation, https://docs.python.org/3/library/.",
+        "[7] National Institute of Standards and Technology (NIST), \"Guide for Conducting Risk Assessments,\" NIST Special Publication 800-30 Revision 1, U.S. Department of Commerce, 2012.",
+        "[8] SQLite Consortium, \"SQLite Database Engine Documentation — Foreign Key Constraints & ACID Transactions,\" https://www.sqlite.org/docs.html.",
     ]
     for item in bib_items:
-        story.append(Paragraph(item, ParagraphStyle('BibItem', parent=body_text, leftIndent=20, firstLineIndent=-20, spaceAfter=8)))
+        story.append(Paragraph(item, ParagraphStyle('BibItem', parent=body_text, leftIndent=20, firstLineIndent=-20, spaceAfter=7)))
 
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 12))
     story.append(Paragraph(
-        "<font color='#CC0000'><i>Note to student: Replace the above placeholder entries with the actual books, research papers, and websites referred to during your project, formatted consistently in IEEE or APA style as instructed by your guide.</i></font>",
+        "<i>Note to student: The above entries cite the official documentation, open-source architectural reference repositories, and published security standards consulted during the engineering of this system, formatted consistently in academic reference style.</i>",
         ParagraphStyle('BibNoteExact', parent=body_text, fontSize=9.5, leading=14)
     ))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 24 (Body Page 14): APPENDICES — Appendix A (Sample Page 24)
+    # PAGE 24 (Body Page 14): APPENDICES — Appendix A (Review 1)
     # =========================================================================
     story.append(Spacer(1, 10))
-    story.append(Paragraph("<b>APPENDICES</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_app\"/><b>APPENDICES</b>", cert_heading))
     story.append(Spacer(1, 15))
     story.append(Paragraph("<b>Appendix A Review 1 — Scanned Copy</b>", ParagraphStyle('AppAExact', fontName=f_bold, fontSize=11, alignment=1, spaceAfter=15)))
     story.append(Spacer(1, 10))
-    story.append(Paragraph("[Insert scanned copy of the signed Review 1 evaluation sheet here.]", ParagraphStyle('ANote', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Insert scanned copy of the signed Review 1 evaluation sheet here.]", ParagraphStyle('ANote', parent=body_text, alignment=1, textColor=CLR_BLACK)))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 25 (Body Page 15): Appendix B (Sample Page 25)
+    # PAGE 25 (Body Page 15): Appendix B (Review 2)
     # =========================================================================
     story.append(Spacer(1, 10))
     story.append(Paragraph("<b>Appendix B Review 2 — Scanned Copy</b>", ParagraphStyle('AppBExact', fontName=f_bold, fontSize=11, alignment=1, spaceAfter=15)))
     story.append(Spacer(1, 10))
-    story.append(Paragraph("[Insert scanned copy of the signed Review 2 evaluation sheet here.]", ParagraphStyle('BNote', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Insert scanned copy of the signed Review 2 evaluation sheet here.]", ParagraphStyle('BNote', parent=body_text, alignment=1, textColor=CLR_BLACK)))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 26 (Body Page 16): Appendix C (Sample Page 26)
+    # PAGE 26 (Body Page 16): Appendix C (Review 3)
     # =========================================================================
     story.append(Spacer(1, 10))
     story.append(Paragraph("<b>Appendix C Review 3 — Scanned Copy</b>", ParagraphStyle('AppCExact', fontName=f_bold, fontSize=11, alignment=1, spaceAfter=15)))
     story.append(Spacer(1, 10))
-    story.append(Paragraph("[Insert scanned copy of the signed Review 3 evaluation sheet here.]", ParagraphStyle('CNote', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Insert scanned copy of the signed Review 3 evaluation sheet here.]", ParagraphStyle('CNote', parent=body_text, alignment=1, textColor=CLR_BLACK)))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 27 (Body Page 17): Appendix D (Sample Page 27)
+    # PAGE 27 (Body Page 17): Appendix D (Review 4)
     # =========================================================================
     story.append(Spacer(1, 10))
     story.append(Paragraph("<b>Appendix D Review 4 — Scanned Copy</b>", ParagraphStyle('AppDExact', fontName=f_bold, fontSize=11, alignment=1, spaceAfter=15)))
     story.append(Spacer(1, 10))
-    story.append(Paragraph("[Insert scanned copy of the signed Review 4 evaluation sheet here.]", ParagraphStyle('DNote', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Insert scanned copy of the signed Review 4 evaluation sheet here.]", ParagraphStyle('DNote', parent=body_text, alignment=1, textColor=CLR_BLACK)))
 
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 28 (Body Page 18): PUBLICATION (Sample Page 28)
+    # PAGE 28 (Body Page 18): PUBLICATION / PATENT / RESEARCH OUTPUT
     # =========================================================================
     story.append(Spacer(1, 10))
-    story.append(Paragraph("<b>PUBLICATION / PATENT / RESEARCH OUTPUT</b>", cert_heading))
+    story.append(Paragraph("<a name=\"sec_pub\"/><b>PUBLICATION / PATENT / RESEARCH OUTPUT</b>", cert_heading))
     story.append(Spacer(1, 10))
     story.append(Paragraph(
         "(This section is optional and applicable only if the student has published a research paper, filed a patent, or produced any other research output based on this project.)",
         ParagraphStyle('PubNoteExact', parent=body_text, alignment=1, fontSize=10, leading=14.5)
     ))
     story.append(Spacer(1, 20))
-    story.append(Paragraph("[Insert scanned copy of the publication certificate / acceptance letter / patent filing receipt here.]", ParagraphStyle('PNote', parent=body_text, alignment=1, textColor=CLR_GRAY_TEXT)))
+    story.append(Paragraph("[Insert scanned copy of the publication certificate / acceptance letter / patent filing receipt here.]", ParagraphStyle('PNote', parent=body_text, alignment=1, textColor=CLR_BLACK)))
 
     # Build PDF
     doc.build(story, canvasmaker=SampleExactCanvas)
-    print(f"Project Report PDF generated matching sample template at: {output_pdf}")
+    print(f"Project Report PDF generated with interactive hyperlinks matching sample template at: {output_pdf}")
 
 
 if __name__ == "__main__":
